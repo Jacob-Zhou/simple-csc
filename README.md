@@ -1,6 +1,6 @@
 # Simple CSC
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache](https://img.shields.io/badge/License-Apache-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
 A simple yet effective training-free and prompt-free approach to Chinese Spelling Correction based on Large Language Models.
@@ -188,6 +188,7 @@ This script will download the datasets from the original sources, which are host
 ## Future Plans
 - [ ] Enable insert and delete operations (Almost done).
 - [ ] Top-k voting for better performance.
+- [ ] Package the code into a library.
 - [ ] Speed up the inference process.
 - [ ] Refactor the code to be compatible with vLLM (Long term plan).
 
