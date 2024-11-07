@@ -185,6 +185,12 @@ This script will download the datasets from the original sources, which are host
 - Qwen2.5
 - InternLM2
 
+## Future Plans
+- [ ] Enable insert and delete operations (Almost done).
+- [ ] Top-k voting for better performance.
+- [ ] Speed up the inference process.
+- [ ] Refactor the code to be compatible with vLLM (Long term plan).
+
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
