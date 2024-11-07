@@ -1,0 +1,52 @@
+# bash scripts
+*.sh
+
+# docs
+docs/_build
+
+# intermediate files
+build
+dist
+*.egg-info
+*.pyc
+
+# experimental results
+exp
+results
+ensemble_results
+
+# log and config files
+log*
+*.log
+*.cfg
+*.ini
+*.yml
+*.yaml
+
+# pycache
+__pycache__
+*.dll
+*.so
+
+# saved model
+*.pkl
+*.pt
+
+# hidden files
+.*
+
+# vscode
+.vscode
+
+# virtual env
+venv*
+
+# dummy dirs
+output
+*.out
+*dataset*
+tmp
+models
+
+# gradio files
+flagged

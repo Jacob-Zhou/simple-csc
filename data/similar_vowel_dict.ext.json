@@ -1,0 +1,354 @@
+{
+    "a": [
+        "ai",
+        "an",
+        "ang",
+        "ao",
+        "e",
+        "ian",
+        "ie",
+        "o",
+        "u"
+    ],
+    "ai": [
+        "a",
+        "an",
+        "ang",
+        "ao",
+        "e",
+        "i",
+        "ing",
+        "ong",
+        "uei"
+    ],
+    "an": [
+        "a",
+        "ang",
+        "ao",
+        "en",
+        "i",
+        "ian",
+        "ing",
+        "ong",
+        "u",
+        "uan",
+        "uang"
+    ],
+    "ang": [
+        "a",
+        "ai",
+        "an",
+        "eng",
+        "iang",
+        "u",
+        "uan",
+        "uang",
+        "uo"
+    ],
+    "ao": [
+        "a",
+        "ai",
+        "ang",
+        "e",
+        "i",
+        "ian",
+        "iao",
+        "ing",
+        "u",
+        "ua",
+        "uang",
+        "uo"
+    ],
+    "e": [
+        "ai",
+        "an",
+        "ao",
+        "ei",
+        "en",
+        "i",
+        "ie",
+        "o",
+        "ong",
+        "ou",
+        "u",
+        "uai",
+        "uo"
+    ],
+    "ei": [
+        "an",
+        "e",
+        "i",
+        "ie"
+    ],
+    "en": [
+        "e",
+        "eng",
+        "u",
+        "un"
+    ],
+    "eng": [
+        "a",
+        "an",
+        "ang",
+        "en",
+        "i",
+        "ou",
+        "u"
+    ],
+    "i": [
+        "a",
+        "ai",
+        "an",
+        "ang",
+        "e",
+        "ei",
+        "en",
+        "eng",
+        "ia",
+        "ian",
+        "iang",
+        "iao",
+        "ie",
+        "in",
+        "ing",
+        "iou",
+        "ong",
+        "u",
+        "uai",
+        "uei",
+        "uen",
+        "uo",
+        "v",
+        "van",
+        "ve"
+    ],
+    "ia": [
+        "i",
+        "ian",
+        "iao",
+        "in",
+        "ing",
+        "iou",
+        "ve"
+    ],
+    "ian": [
+        "an",
+        "ao",
+        "ei",
+        "eng",
+        "i",
+        "ia",
+        "ian",
+        "iang",
+        "iao",
+        "ie",
+        "in",
+        "iou",
+        "uan",
+        "van",
+        "ve"
+    ],
+    "iang": [
+        "ang",
+        "i",
+        "ian",
+        "iao",
+        "in",
+        "ing",
+        "u",
+        "uang"
+    ],
+    "iao": [
+        "ao",
+        "i",
+        "ia",
+        "ie",
+        "iou",
+        "ve"
+    ],
+    "ie": [
+        "i",
+        "ian",
+        "van",
+        "ve"
+    ],
+    "in": [
+        "en",
+        "i",
+        "ia",
+        "ian",
+        "iang",
+        "iao",
+        "ing",
+        "iou",
+        "uo",
+        "v",
+        "vn"
+    ],
+    "ing": [
+        "ao",
+        "ei",
+        "i",
+        "ian",
+        "iang",
+        "ie",
+        "in",
+        "iong",
+        "iou",
+        "ong",
+        "v",
+        "van",
+        "ve",
+        "vn"
+    ],
+    "iong": [
+        "ing",
+        "vn"
+    ],
+    "iou": [
+        "i",
+        "ian",
+        "iang",
+        "iao",
+        "ing",
+        "v"
+    ],
+    "o": [
+        "a",
+        "ao",
+        "i",
+        "iao",
+        "uo"
+    ],
+    "ong": [
+        "a",
+        "ai",
+        "an",
+        "e",
+        "ian",
+        "ing",
+        "ou",
+        "u",
+        "uan",
+        "uang",
+        "un"
+    ],
+    "ou": [
+        "e",
+        "u",
+        "ua",
+        "uo"
+    ],
+    "u": [
+        "an",
+        "ao",
+        "e",
+        "ei",
+        "en",
+        "eng",
+        "i",
+        "ian",
+        "ie",
+        "ing",
+        "o",
+        "ou",
+        "ua",
+        "uan",
+        "uei",
+        "uen",
+        "uo",
+        "v"
+    ],
+    "ua": [
+        "ao",
+        "e",
+        "ou",
+        "u",
+        "uai",
+        "uan"
+    ],
+    "uai": [
+        "ai",
+        "e"
+    ],
+    "uan": [
+        "an",
+        "ang",
+        "ao",
+        "e",
+        "ian",
+        "ua",
+        "uang",
+        "uen",
+        "uo"
+    ],
+    "uang": [
+        "an",
+        "ang",
+        "e",
+        "i",
+        "iang",
+        "uai",
+        "uan"
+    ],
+    "uei": [
+        "an",
+        "ao",
+        "eng",
+        "i",
+        "u",
+        "uan",
+        "uang",
+        "uo"
+    ],
+    "uen": [
+        "i",
+        "u",
+        "uan"
+    ],
+    "un": [
+        "en",
+        "ong"
+    ],
+    "uo": [
+        "ao",
+        "i",
+        "in",
+        "ing",
+        "o",
+        "u",
+        "uan",
+        "uei"
+    ],
+    "v": [
+        "er",
+        "i",
+        "ian",
+        "u",
+        "ve",
+        "vn"
+    ],
+    "van": [
+        "i",
+        "ia",
+        "ian",
+        "iang",
+        "iao",
+        "in",
+        "iong",
+        "vn"
+    ],
+    "ve": [
+        "i",
+        "iao",
+        "ie",
+        "ing",
+        "iou",
+        "v"
+    ],
+    "vn": [
+        "in",
+        "iong",
+        "van"
+    ]
+}
