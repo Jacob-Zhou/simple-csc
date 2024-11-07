@@ -3,8 +3,15 @@ import json
 import pickle
 
 import pypinyin
+from pypinyin_dict.pinyin_data import ktghz2013
+from pypinyin_dict.phrase_pinyin_data import large_pinyin
 
 from tqdm import tqdm
+
+# load better pinyin data
+ktghz2013.load()
+# load better phrase pinyin data
+large_pinyin.load()
 
 RADICAL_INDEX = 0
 COMPONENT_INDEX = 1
