@@ -1,6 +1,6 @@
 # Simple CSC
 
-This repository provides a implementation of paper [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](xxx).
+This repository provides the original implementation of paper [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 
 ## Requirements
 - torch>=2.0.1

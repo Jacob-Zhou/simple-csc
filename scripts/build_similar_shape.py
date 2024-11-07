@@ -3,16 +3,8 @@ import json
 import pickle
 
 import pypinyin
-from pypinyin import pinyin, Style
-from pypinyin_dict.pinyin_data import ktghz2013
-from pypinyin_dict.phrase_pinyin_data import large_pinyin
 
 from tqdm import tqdm
-
-# load better pinyin data
-ktghz2013.load()
-# load better phrase pinyin data
-large_pinyin.load()
 
 RADICAL_INDEX = 0
 COMPONENT_INDEX = 1
@@ -46,25 +38,6 @@ char_set = set(radical_dict.keys()) | set(four_corner_dict.keys()) | set(map(chr
 four_corner_index = defaultdict(set)
 radical_index = defaultdict(set)
 part_of_radical_index = defaultdict(set)
-
-for word in tqdm(pypinyin.phrases_dict.phrases_dict):
-    word_pinyins = pinyin(
-                word,
-                style=Style.NORMAL,
-                heteronym=True,
-                errors=lambda x: [char for char in x],
-            )
-    for i, char in enumerate(word):
-        char_pinyin = pinyin(
-            char,
-            style=Style.NORMAL,
-            heteronym=True,
-            errors=lambda x: [char for char in x],
-        )
-        if char_pinyin[0] != word_pinyins[i]:
-            print(f"{char} {char_pinyin} {word} {word_pinyins}")
-
-exit()
 
 for char in tqdm(char_set):
     # Structure index
