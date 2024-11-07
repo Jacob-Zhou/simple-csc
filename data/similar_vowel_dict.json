@@ -1,0 +1,68 @@
+{
+    "an": [
+        "ang",
+        "uan",
+        "uang",
+        "ian"
+    ],
+    "ang": [
+        "an",
+        "uan",
+        "uang",
+        "iang"
+    ],
+    "uan": [
+        "an",
+        "ang",
+        "uang",
+        "ian"
+    ],
+    "uang": [
+        "an",
+        "ang",
+        "uan",
+        "iang"
+    ],
+    "ian": [
+        "an",
+        "uan",
+        "ian"
+    ],
+    "iang": [
+        "ang",
+        "uang",
+        "ian"
+    ],
+    "en": [
+        "eng",
+        "un"
+    ],
+    "eng": [
+        "en"
+    ],
+    "un": [
+        "en",
+        "ong"
+    ],
+    "ong": [
+        "un"
+    ],
+    "in": [
+        "ing"
+    ],
+    "ing": [
+        "in"
+    ],
+    "o": [
+        "uo"
+    ],
+    "uo": [
+        "o"
+    ],
+    "v": [
+        "u"
+    ],
+    "u": [
+        "v"
+    ]
+}

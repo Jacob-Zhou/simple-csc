@@ -1,0 +1,11 @@
+pypinyin
+pypinyin-dict
+torch>=2.0.1
+transformers>=4.27.0
+sentencepiece
+xformers==0.0.21
+accelerate
+bitsandbytes
+modelscope
+opencc-python-reimplemented
+streamlit
