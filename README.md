@@ -141,7 +141,7 @@ We provide a demo application for our approach. To run the demo:
 streamlit run demo.py
 ```
 
-By default, the demo uses `Qwen/Qwen2.5-0.5B`, which can run on a V100 GPU with 32GB memory. You can change to other models in the demo's sidebar or by modifying the `default_model` in `demo_config.py`.
+By default, the demo uses `Qwen/Qwen2.5-0.5B`, which can run on a V100 GPU with 32GB memory. You can change to other models in the demo's sidebar or by modifying the `default_model` in `configs/demo_app_config.yaml`.
 
 The sidebar also allows you to adjust `n_beam`, `alpha`, and `use_faithfulness_reward` parameters.
 
