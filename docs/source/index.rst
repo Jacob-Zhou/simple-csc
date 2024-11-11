@@ -1,10 +1,13 @@
 LMCSC Package
 =============
 
-The LMCSC (Language Model-based Corrector with Semantic Constraints) package provides a comprehensive set of tools for text correction and generation using advanced language models. This package includes several modules that work together to provide powerful text processing capabilities.
+The LMCSC (Language Model for Chinese Spelling Check) package provides a way to convert a Chinese Language Model into a Chinese Spelling Check Model without any extra training.
+
+Table of Contents
+-----------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Modules
 
    lmcsc/corrector
@@ -19,8 +22,8 @@ Corrector
 
 The :doc:`lmcsc/corrector` module contains the ``LMCorrector`` class, which is the main interface for text correction. It utilizes beam search with distortion probabilities to correct input text based on pretrained language models.
 
-Generation
-----------
+Generation Function
+------------------
 
 The :doc:`lmcsc/generation` module provides functionality for text generation using language models with distortion-guided beam search. It extends standard beam search by incorporating distortion probabilities and observed sequences.
 
