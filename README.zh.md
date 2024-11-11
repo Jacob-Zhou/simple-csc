@@ -9,6 +9,9 @@
 
 本仓库提供了论文 [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027) 的实现。
 
+__新闻__
+- 2024/09/20: 我们的论文被 EMNLP 2024 主会接收。
+
 ## 目录
 
 - [环境要求](#环境要求)
@@ -199,3 +202,31 @@ python -u run.py  \
 
 ## 许可证
 该项目采用 Apache 许可证 - 详见 [LICENSE](LICENSE) 文件。
+
+## 引用
+如果您觉得这个工作有用，请引用：
+
+```bibtex
+@inproceedings{zhou-etal-2024-simple,
+    title = "A Simple yet Effective Training-free Prompt-free Approach to {C}hinese Spelling Correction Based on Large Language Models",
+    author = "Zhou, Houquan  and
+      Li, Zhenghua  and
+      Zhang, Bo  and
+      Li, Chen  and
+      Lai, Shaopeng  and
+      Zhang, Ji  and
+      Huang, Fei  and
+      Zhang, Min",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.966",
+    pages = "17446--17467",
+    abstract = "This work proposes a simple training-free prompt-free approach to leverage large language models (LLMs) for the Chinese spelling correction (CSC) task, which is totally different from all previous CSC approaches. The key idea is to use an LLM as a pure language model in a conventional manner. The LLM goes through the input sentence from the beginning, and at each inference step, produces a distribution over its vocabulary for deciding the next token, given a partial sentence. To ensure that the output sentence remains faithful to the input sentence, we design a minimal distortion model that utilizes pronunciation or shape similarities between the original and replaced characters. Furthermore, we propose two useful reward strategies to address practical challenges specific to the CSC task. Experiments on five public datasets demonstrate that our approach significantly improves LLM performance, enabling them to compete with state-of-the-art domain-general CSC models.",
+}
+```
