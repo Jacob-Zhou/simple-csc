@@ -5,26 +5,26 @@
 
 [English](README.md) | [中文](README.zh.md)
 
-A simple yet effective training-free and prompt-free approach to Chinese Spelling Correction based on Large Language Models.
+一键让中文大模型化身中文拼写纠错模型!!!
 
-This repository provides an implementation of the paper [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
+本仓库提供了论文 [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027) 的实现。
 
-## Table of Contents
+## 目录
 
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Model Preparation](#model-preparation)
+- [环境要求](#环境要求)
+- [安装](#安装)
+- [使用方法](#使用方法)
+  - [模型准备](#模型准备)
   - [Python API](#python-api)
-  - [RESTful API Server & API Call](#restful-api-server--api-call)
-  - [Demo App](#demo-app)
-  - [Run Experiments](#run-experiments)
-    - [Data Preparation](#data-preparation)
-- [Supported Models](#supported-models)
-- [Contributing](#contributing)
-- [License](#license)
+  - [RESTful API 服务器和调用](#restful-api-服务器和调用)
+  - [演示应用](#演示应用)
+  - [运行实验](#运行实验)
+    - [数据准备](#数据准备)
+- [支持的模型](#支持的模型)
+- [贡献](#贡献)
+- [许可证](#许可证)
 
-## Requirements
+## 环境要求
 - torch>=2.0.1
 - transformers>=4.27.0
 - xformers==0.0.21
@@ -34,36 +34,36 @@ This repository provides an implementation of the paper [A Simple yet Effective 
 - pypinyin
 - pypinyin-dict
 - opencc-python-reimplemented
-- modelscope *(optional, for model download from modelscope)*
-- streamlit *(optional, for demo app)*
-- uvicorn *(optional, for RESTful API server)*
-- fastapi *(optional, for RESTful API server)*
-- loguru *(optional, for RESTful API server)*
-- sse_starlette *(optional, for RESTful API server)*
+- modelscope *(可选，用于从 modelscope 下载模型)*
+- streamlit *(可选，用于演示应用)*
+- uvicorn *(可选，用于 RESTful API 服务器)*
+- fastapi *(可选，用于 RESTful API 服务器)*
+- loguru *(可选，用于 RESTful API 服务器)*
+- sse_starlette *(可选，用于 RESTful API 服务器)*
 
-## Installation
+## 安装
 
-You can set up the environment by running:
+您可以通过运行以下命令来配置环境：
 
 ```bash
 bash scripts/set_enviroment.sh
 ```
 
-This will automatically create a virtual environment and install the required packages.
+这将自动创建虚拟环境并安装所需的包。
 
-For better performance, you can install flash-attn:
+为获得更好的性能，您可以安装 flash-attn：
 
 ```bash
 pip install flash-attn --no-build-isolation
 ```
 
-## Usage
+## 使用方法
 
-### Model Preparation
-The code will automatically download the model from the Huggingface model hub, if the model is not found in the local cache.
+### 模型准备
+如果在本地缓存中未找到模型，代码将自动从 Huggingface 模型仓库下载模型。
 
 ### Python API
-We provide a simple Python API for the corrector:
+我们提供了一个简单的 Python API 用于纠错：
 
 ```python
 from lmcsc import LMCorrector
@@ -78,7 +78,7 @@ print(outputs)
 # [('完善农产品上行发展机制。',)]
 ```
 
-Stream mode is also available:
+也支持流式模式：
 
 ```python
 outputs = corrector("完善农产品上行发展机智。", stream=True)
@@ -87,8 +87,8 @@ for output in outputs:
 print()
 ```
 
-### RESTful API Server & API Call
-We also provide the RESTful API server for the corrector.
+### RESTful API 服务器和调用
+我们还提供了纠错器的 RESTful API 服务器。
 
 ```bash
 python api_server.py  \
@@ -98,14 +98,14 @@ python api_server.py  \
     --workers 1
 ```
 
-You can use `curl` to test the RESTful API server.
+您可以使用 `curl` 来测试 RESTful API 服务器。
 
 ```bash
-# Default
+# 默认模式
 curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/json' -d '{"input": "完善农产品上行发展机智。"}'
 # > {"id":"","object":"correction","choices":[{"index":0,"message":{"content":"完善农产品上行发展机制。"}}],"created":1727058762}
 
-# Stream
+# 流式模式
 curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/json' -d '{"input": "完善农产品上行发展机智。", "stream": "True"}'
 # > data: {"id":"","object":"correction.chunk","choices":[{"delta":{"content":"完善"},"index":0}],"created":1727058762}
 # > data: {"id":"","object":"correction.chunk","choices":[{"delta":{"content":"完善农产品"},"index":0}],"created":1727058762}
@@ -120,7 +120,7 @@ curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/js
 # > data: {"id":"","object":"correction.chunk","choices":[{"delta":{"content":"完善农产品上行发展机制。"},"index":0}],"created":1727058762}
 # > data: [DONE]
 
-# Correction with contexts
+# 带上下文的纠错
 curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/json' -d '{"input": "未挨前兆", "contexts": "患者提问：", "stream": "True"}'
 # > data: {"id":"","object":"correction.chunk","choices":[{"delta":{"content":"未"},"index":0}],"created":1727058762}
 # > data: {"id":"","object":"correction.chunk","choices":[{"delta":{"content":"未挨"},"index":0}],"created":1727058762}
@@ -133,26 +133,26 @@ curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/js
 # > data: [DONE]
 ```
 
-### Demo App
-We provide a demo application for our approach. To run the demo:
+### 演示应用
+我们为我们的方法提供了一个演示应用。要运行演示：
 
-1. Ensure you have installed the `streamlit` package.
-2. Run the following command:
+1. 确保您已安装 `streamlit` 包。
+2. 运行以下命令：
 
 ```bash
 streamlit run demo.py
 ```
 
-By default, the demo uses `Qwen/Qwen2.5-0.5B`, which can run on a V100 GPU with 32GB memory. You can change to other models in the demo's sidebar or by modifying the `default_model` in `configs/demo_app_config.yaml`.
+默认情况下，演示使用 `Qwen/Qwen2.5-0.5B`，可以在具有 32GB 内存的 V100 GPU 上运行。您可以在演示的侧边栏中或通过修改 `configs/demo_app_config.yaml` 中的 `default_model` 来更换其他模型。
 
-The sidebar also allows you to adjust `n_beam`, `alpha`, and `use_faithfulness_reward` parameters.
+侧边栏还允许您调整 `n_beam`、`alpha` 和 `use_faithfulness_reward` 参数。
 
-Several examples are provided in the sidebar, including a long sentence with 1866 characters.
+侧边栏中提供了几个示例，包括一个包含 1866 个字的长句。
 
-![Demo Screenshot](https://github.com/Jacob-Zhou/llm-csc/assets/13799122/a0f7545d-424e-4b73-b147-f7930b0a7a4a)
+![演示截图](https://github.com/Jacob-Zhou/llm-csc/assets/13799122/a0f7545d-424e-4b73-b147-f7930b0a7a4a)
 
-### Run Experiments
-The experiments on the datasets mentioned in the paper can be run by the following command:
+### 运行实验
+可以通过以下命令运行论文中提到的数据集的实验：
 
 ```bash
 python -u run.py  \
@@ -166,20 +166,20 @@ python -u run.py  \
     --use-faithfulness-reward
 ```
 
-#### Data Preparation
-Before running, you are required to preprocess each sentence pair into the format of
+#### 数据准备
+运行之前，您需要将每个句子对预处理成以下格式：
 ```
 [src]	[tgt]
 [src]	[tgt]
 [src]	[tgt]
 ```
-Where `[src]` and `[tgt]` are the source and target sentences, respectively.
-A `\t` is used to separate them.
+其中 `[src]` 和 `[tgt]` 分别是源句子和目标句子。
+使用 `\t` 分隔它们。
 
-The process of the data preparation can be found in the `scripts/download_datasets.sh`.
-This script will download the datasets from the original sources, which are hosted on `raw.githubusercontent.com` and `Google Drive`, and preprocess them into the required format.
+数据准备过程可以在 `scripts/download_datasets.sh` 中找到。
+该脚本将从原始来源（托管在 `raw.githubusercontent.com` 和 `Google Drive` 上）下载数据集，并将它们预处理成所需格式。
 
-## Supported Models
+## 支持的模型
 - GPT2
 - Baichuan2
 - Qwen1.5
@@ -187,15 +187,15 @@ This script will download the datasets from the original sources, which are host
 - Qwen2.5
 - InternLM2
 
-## Future Plans
-- [ ] Enable insert and delete operations (Almost done).
-- [ ] Top-k voting for better performance.
-- [ ] Package the code into a library.
-- [ ] Speed up the inference process.
-- [ ] Refactor the code to be compatible with vLLM (Long term plan).
+## 未来计划
+- [ ] 允许字的插入和删除（几乎完成）。
+- [ ] Top-k 投票以获得更好的性能。
+- [ ] 将代码打包成库。
+- [ ] 加快推理过程。
+- [ ] 重构代码以兼容 vLLM（长期计划）。
 
-## Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 贡献
+欢迎贡献！请随时提交 Pull Request。
 
-## License
-This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details.
+## 许可证
+该项目采用 Apache 许可证 - 详见 [LICENSE](LICENSE) 文件。
