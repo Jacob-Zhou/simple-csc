@@ -344,7 +344,7 @@ class LMCorrector:
             If `stream` is True, the returned value is a generator that yields __intermediate predictions__.
             Otherwise, the returned value is a list of corrected texts.
 
-        Example:
+        Examples:
             >>> corrector("完善农产品上行发展机智。")
             [('完善农产品上行发展机制。',)]
 
@@ -363,6 +363,7 @@ class LMCorrector:
             [('完善农产品上行发展机制。',)]
             [('完善农产品上行发展机制。',)]
             [('完善农产品上行发展机制。',)]
+
         """
         if n_beam is None:
             n_beam = self.n_beam

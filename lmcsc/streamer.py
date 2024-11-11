@@ -8,11 +8,8 @@ class BeamStreamer(BaseStreamer):
     """
     Simple text streamer that prints the token(s) to stdout as soon as entire words are formed.
 
-    <Tip warning={true}>
-
+    Warnings:
     The API for the streamer classes is still under development and may change in the future.
-
-    </Tip>
 
     Parameters:
         tokenizer (`AutoTokenizer`):
@@ -23,8 +20,6 @@ class BeamStreamer(BaseStreamer):
             Additional keyword arguments to pass to the tokenizer's `decode` method.
 
     Examples:
-
-        ```python
         >>> from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer
 
         >>> tok = AutoTokenizer.from_pretrained("openai-community/gpt2")
@@ -35,7 +30,7 @@ class BeamStreamer(BaseStreamer):
         >>> # Despite returning the usual output, the streamer will also print the generated text to stdout.
         >>> _ = model.generate(**inputs, streamer=streamer, max_new_tokens=20)
         An increasing sequence: one, two, three, four, five, six, seven, eight, nine, ten, eleven,
-        ```
+
     """
 
     def __init__(

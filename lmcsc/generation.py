@@ -161,17 +161,18 @@ def distortion_guided_beam_search(
     **model_kwargs,
 ) -> Union[GenerateBeamOutput, torch.LongTensor]:
     r"""
-    Generates sequences of token ids for models with a language modeling head using **beam search decoding** and
-    can be used for text-decoder, text-to-text, speech-to-text, and vision-to-text models.
+    A modified beam search function for CSC.
 
-    <Tip warning={true}>
-
-    In most cases, you do not need to call [`~generation.GenerationMixin.beam_search`] directly. Use generate()
-    instead. For an overview of generation strategies and code examples, check the [following
-    guide](../generation_strategies).
-
-    </Tip>
-
+    Notes:
+        This code is based on the `beam_search` function in the `transformers` library.
+        We make 5 modifications to the original code:
+            0. Initialization.
+            1. Intervention of decoding process.
+            2. Update the observed sequences.
+            3. Remove stopping_criteria.
+            4. Put the generated results into Streamer.
+        You can search `## Modification X.*` in the code to find the corresponding part.
+        
     Parameters:
         observed_sequence_generator (`BaseObversationGenerator`):
             An instance of [`BaseObversationGenerator`] that defines how observed sequences are generated.
@@ -215,59 +216,8 @@ def distortion_guided_beam_search(
         [`~generation.GenerateBeamDecoderOnlyOutput`] if `model.config.is_encoder_decoder=False` and
         `return_dict_in_generate=True` or a [`~generation.GenerateBeamEncoderDecoderOutput`] if
         `model.config.is_encoder_decoder=True`.
+    """
 
-
-    Examples:
-
-    ```python
-    >>> from transformers import (
-    ...     AutoTokenizer,
-    ...     AutoModelForSeq2SeqLM,
-    ...     LogitsProcessorList,
-    ...     MinLengthLogitsProcessor,
-    ...     BeamSearchScorer,
-    ... )
-    >>> import torch
-
-    >>> tokenizer = AutoTokenizer.from_pretrained("t5-base")
-    >>> model = AutoModelForSeq2SeqLM.from_pretrained("t5-base")
-
-    >>> encoder_input_str = "translate English to German: How old are you?"
-    >>> encoder_input_ids = tokenizer(encoder_input_str, return_tensors="pt").input_ids
-
-
-    >>> # lets run beam search using 3 beams
-    >>> num_beams = 3
-    >>> # define decoder start token ids
-    >>> input_ids = torch.ones((num_beams, 1), device=model.device, dtype=torch.long)
-    >>> input_ids = input_ids * model.config.decoder_start_token_id
-
-    >>> # add encoder_outputs to model keyword arguments
-    >>> model_kwargs = {
-    ...     "encoder_outputs": model.get_encoder()(
-    ...         encoder_input_ids.repeat_interleave(num_beams, dim=0), return_dict=True
-    ...     )
-    ... }
-
-    >>> # instantiate beam scorer
-    >>> beam_scorer = BeamSearchScorer(
-    ...     batch_size=1,
-    ...     num_beams=num_beams,
-    ...     device=model.device,
-    ... )
-
-    >>> # instantiate logits processors
-    >>> logits_processor = LogitsProcessorList(
-    ...     [
-    ...         MinLengthLogitsProcessor(5, eos_token_id=model.config.eos_token_id),
-    ...     ]
-    ... )
-
-    >>> outputs = model.beam_search(input_ids, beam_scorer, logits_processor=logits_processor, **model_kwargs)
-
-    >>> tokenizer.batch_decode(outputs, skip_special_tokens=True)
-    ['Wie alt bist du?']
-    ```"""
     # init values
     logits_processor = (
         logits_processor if logits_processor is not None else LogitsProcessorList()
