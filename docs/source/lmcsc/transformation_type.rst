@@ -1,11 +1,6 @@
 TransformationType
 ==================
 
-.. automodule:: lmcsc.transformation_type
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 The ``TransformationType`` class is responsible for handling various types of transformations on input sequences, particularly for Chinese text. It provides functionality to identify and categorize different types of character transformations, such as similar shapes, similar pronunciations, and common confusions in Chinese characters.
 
 Key Features
@@ -68,3 +63,11 @@ The ``TransformationType`` class provides several advanced features:
 4. Support for both character-level and byte-level processing
 
 For more details on these advanced features, please refer to the class documentation.
+
+API Documentation
+-----------------
+
+.. automodule:: lmcsc.transformation_type
+   :members:
+   :undoc-members:
+   :show-inheritance:

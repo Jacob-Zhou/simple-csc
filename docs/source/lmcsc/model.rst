@@ -1,11 +1,6 @@
 Model
 =====
 
-.. automodule:: lmcsc.model
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 The ``model`` module provides classes for different language models used in the LMCSC (Language Model-based Corrector with Semantic Constraints) system. It includes a base class ``LMModel`` and several specific model implementations.
 
 Key Components
@@ -66,3 +61,11 @@ Example:
    baichuan_model = AutoLMModel.from_pretrained("Baichuan2-7B-Base")
 
 This factory pattern allows for easy integration of new model types and simplifies the process of working with different language models within the LMCSC system.
+
+API Documentation
+-----------------
+
+.. automodule:: lmcsc.model
+   :members:
+   :undoc-members:
+   :show-inheritance:

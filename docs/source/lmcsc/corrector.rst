@@ -1,11 +1,6 @@
 LMCorrector
 ===========
 
-.. automodule:: lmcsc.corrector
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 The ``LMCorrector`` class is a language model-based corrector that utilizes beam search with distortion probabilities to correct text input. It can be used to fix errors in text based on a pretrained language model.
 
 Key Features
@@ -60,3 +55,10 @@ The ``LMCorrector`` class provides several advanced features and customization o
 4. Context-aware correction
 
 For more details on these advanced features, please refer to the class documentation.
+
+API Documentation
+-----------------
+.. automodule:: lmcsc.corrector
+   :members:
+   :undoc-members:
+   :show-inheritance:

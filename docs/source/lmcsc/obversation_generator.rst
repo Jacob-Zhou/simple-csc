@@ -1,11 +1,6 @@
 ObservationGenerator
 ====================
 
-.. automodule:: lmcsc.obversation_generator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 The ``obversation_generator`` module provides classes for generating and managing observations during the beam search process in the LMCSC (Language Model-based Corrector with Semantic Constraints) system.
 
 Key Components
@@ -40,3 +35,11 @@ Key Features:
 - Provides verbose mode for detailed step tracking
 - Handles reordering of beams during search
 - Generates observed sequences based on the current state of the search
+
+API Documentation
+-----------------
+
+.. automodule:: lmcsc.obversation_generator
+   :members:
+   :undoc-members:
+   :show-inheritance:

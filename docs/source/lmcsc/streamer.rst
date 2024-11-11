@@ -1,11 +1,6 @@
 Streamer
 ========
 
-.. automodule:: lmcsc.streamer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 The ``streamer`` module provides functionality for streaming the output of beam search during text generation. It includes the ``BeamStreamer`` class, which is designed to work with the LMCSC (Language Model-based Corrector with Semantic Constraints) system.
 
 Key Components
@@ -26,3 +21,11 @@ Key Features:
 - Provides an iterator interface for easy access to generated text
 - Supports timeout for streaming operations
 - Handles end-of-stream signaling
+
+API Documentation
+-----------------
+
+.. automodule:: lmcsc.streamer
+   :members:
+   :undoc-members:
+   :show-inheritance:
