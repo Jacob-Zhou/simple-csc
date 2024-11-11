@@ -35,7 +35,6 @@ setup(
         'torch>=2.0.1',
         'transformers>=4.27.0',
         'sentencepiece',
-        'xformers==0.0.21',
         'numpy==1.24.4',
         'accelerate',
         'bitsandbytes',
