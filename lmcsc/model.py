@@ -121,7 +121,7 @@ class LMModel:
         Args:
             src (List[str]): The source sentences.
             contexts (List[str], optional): The context for each source sentence. Defaults to None.
-            prompt_split (str, optional): The prompt split token. Defaults to "\n".
+            prompt_split (str, optional): The prompt split token. Defaults to "\\n".
             n_beam (int, optional): The number of beams. Defaults to 8.
             n_beam_hyps_to_keep (int, optional): The number of beam hypotheses to keep. Defaults to 1.
 
@@ -165,7 +165,7 @@ class LMModel:
         Args:
             outputs: The generated outputs.
             contexts (List[str], optional): The context for each output. Defaults to None.
-            prompt_split (str, optional): The prompt split token. Defaults to "\n".
+            prompt_split (str, optional): The prompt split token. Defaults to "\\n".
             n_beam_hyps_to_keep (int, optional): The number of beam hypotheses to keep. Defaults to 1.
             need_decode (bool, optional): Whether to decode the outputs. Defaults to True.
 
@@ -341,7 +341,7 @@ class LlamaModel(LMModel):
         Args:
             src (List[str]): The source sentences.
             contexts (List[str], optional): The context for each source sentence. Defaults to None.
-            prompt_split (str, optional): The prompt split token. Defaults to "\n".
+            prompt_split (str, optional): The prompt split token. Defaults to "\\n".
             n_beam (int, optional): The number of beams. Defaults to 8.
             n_beam_hyps_to_keep (int, optional): The number of beam hypotheses to keep. Defaults to 1.
 
@@ -522,7 +522,7 @@ class UerModel(LMModel):
         Args:
             outputs: The generated outputs.
             contexts (List[str], optional): The context for each output. Defaults to None.
-            prompt_split (str, optional): The prompt split token. Defaults to "\n".
+            prompt_split (str, optional): The prompt split token. Defaults to "\\n".
             n_beam_hyps_to_keep (int, optional): The number of beam hypotheses to keep. Defaults to 1.
 
         Returns:
