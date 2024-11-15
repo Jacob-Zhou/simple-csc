@@ -72,7 +72,7 @@ class LMCorrector:
         self.n_observed_chars = n_observed_chars or self.config['n_observed_chars']
         self.alpha = alpha or self.config['alpha']
         self.distortion_model_smoothing = distortion_model_smoothing or self.config['distortion_model_smoothing']
-        self.use_faithfulness_reward = use_faithfulness_reward or self.config['use_faithfulness_reward']
+        self.use_faithfulness_reward = use_faithfulness_reward if use_faithfulness_reward is not None else self.config['use_faithfulness_reward']
         self.distortion_probs = customized_distortion_probs or self.config['distortion_probs']
         self.max_length = max_length or self.config['max_length']
 
