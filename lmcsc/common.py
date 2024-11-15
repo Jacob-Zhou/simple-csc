@@ -5,6 +5,7 @@ COMPONENT_INDEX = 1
 OOV_CHAR = "□"
 
 MIN = -1e32
+HALF_MIN = -1e4
 MAX = 1e32
 EPS = 1e-7
 
