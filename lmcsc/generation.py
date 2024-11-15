@@ -132,7 +132,10 @@ def distortion_probs_to_cuda(
         torch.Tensor: The resulting tensor with distortion probabilities.
     """
     # Initialize distortion probabilities tensor and mask positions where EOS is forced
-    MIN = -1e32
+    if template_tensor.dtype == torch.float16:
+        MIN = -1e4
+    else:
+        MIN = -1e32
     distortion_probs = template_tensor.masked_fill(force_eos[:, None], MIN).view(batch_size, num_beams, vocab_size)
     
     # Update distortion probabilities with the provided values
