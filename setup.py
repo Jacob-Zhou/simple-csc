@@ -44,7 +44,8 @@ setup(
         'uvicorn',
         'fastapi',
         'loguru',
-        'sse_starlette'
+        'sse_starlette',
+        'starlette>=0.40.0,<0.42.0'
     ],
     extras_require={},
     python_requires='>=3.7',
