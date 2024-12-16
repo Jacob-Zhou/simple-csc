@@ -10,6 +10,7 @@
 本仓库提供了论文 [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027) 的实现。
 
 __新闻__
+- 2024/12/09: 我们荣获[金山办公2024算法挑战赛-中文文本智能校对大赛](https://datastudio.wps.cn/matchcenter/competition/1/introduction)冠军。在比赛中，我们以本代码库作为核心模块，取得了 83.37 的 $F_{0.5}$ 分数，比第二名高 2.02 分。
 - 2024/09/20: 我们的论文被 EMNLP 2024 主会接收。
 
 ## 目录

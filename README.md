@@ -10,7 +10,8 @@ A simple yet effective training-free and prompt-free approach to Chinese Spellin
 This repository provides an implementation of the paper [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 
 __News__
-- 2024/09/20: Our paper is accepted by EMNLP 2024 main conference.
+- 2024/12/09: We **won 1st place** in the [Kingsoft Office 2024 Algorithm Challenge: Chinese Text Correction Competition (金山办公2024算法挑战赛-中文文本智能校对大赛)](https://datastudio.wps.cn/matchcenter/competition/1/introduction), with this codebase serving as a key module of our solution. Notably, our solution achieved an $F_{0.5}$ score that was **2.02** points higher than the second-place team.
+- 2024/09/20: Our paper is accepted by **EMNLP 2024 main** conference.
 
 ## Table of Contents
 
