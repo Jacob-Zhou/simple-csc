@@ -13,4 +13,4 @@ streamlit
 uvicorn
 fastapi
 loguru
-sse_starlette
+sse_starlette<0.42.0,>=0.40.0
