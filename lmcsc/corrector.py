@@ -70,7 +70,7 @@ class LMCorrector:
         self.n_beam = n_beam or self.config['n_beam']
         self.n_beam_hyps_to_keep = n_beam_hyps_to_keep or self.config['n_beam_hyps_to_keep']
         self.n_observed_chars = n_observed_chars or self.config['n_observed_chars']
-        self.alpha = alpha or self.config['alpha']
+        self.alpha = alpha if alpha is not None else self.config['alpha']
         self.distortion_model_smoothing = distortion_model_smoothing or self.config['distortion_model_smoothing']
         self.use_faithfulness_reward = use_faithfulness_reward if use_faithfulness_reward is not None else self.config['use_faithfulness_reward']
         self.distortion_probs = customized_distortion_probs or self.config['distortion_probs']
