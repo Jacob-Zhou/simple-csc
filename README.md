@@ -61,6 +61,15 @@ For better performance, you can install flash-attn:
 pip install flash-attn --no-build-isolation
 ```
 
+<!-- Add a warning about Qwen2.5 -->
+
+> [!WARNING] 
+> Reported by a user, using Qwen2.5 family models without flash-attn will lead unexpected errors.
+> 
+> Please install flash-attn to avoid this issue.
+> 
+> We are working on a fix for this issue, making it compatible with Qwen2.5 family without flash-attn.
+
 ## Usage
 
 ### Model Preparation

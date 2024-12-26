@@ -61,6 +61,15 @@ bash scripts/set_enviroment.sh
 pip install flash-attn --no-build-isolation
 ```
 
+<!-- Add a warning about Qwen2.5 -->
+
+> [!WARNING] 
+> 一位用户报告说，使用 Qwen2.5 系列模型时，如果没有安装 flash-attn，代码会产生意料之外的行为。
+> 
+> 因此如在本代码库中使用 Qwen2.5 系列模型，请务必安装 flash-attn。
+> 
+> 同时我们正在努力解决这个问题，使未安装 flash-attn 的用户也能正常使用 Qwen2.5 系列模型。
+
 ## 使用方法
 
 ### 模型准备
