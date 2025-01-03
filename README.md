@@ -64,7 +64,7 @@ pip install flash-attn --no-build-isolation
 <!-- Add a warning about Qwen2.5 -->
 
 > [!WARNING] 
-> Reported by a user, using Qwen2 or Qwen2.5 family models without flash-attn will lead unexpected errors.
+> Reported by a user, using Qwen2 or Qwen2.5 family models without flash-attn will lead unexpected errors. **Specifically, the corrector will stuck in the beam search process.**
 > 
 > Please install flash-attn to avoid this issue. Or you can set `torch_dtype=torch.bfloat16` in the `LMCorrector` class to avoid this issue.
 >
