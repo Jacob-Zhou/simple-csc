@@ -67,14 +67,15 @@ class LMCorrector:
             self.config = yaml.safe_load(config_file)
 
         # Set parameters, using either the provided ones or those from the configuration
-        self.n_beam = n_beam or self.config['n_beam']
-        self.n_beam_hyps_to_keep = n_beam_hyps_to_keep or self.config['n_beam_hyps_to_keep']
-        self.n_observed_chars = n_observed_chars or self.config['n_observed_chars']
+        # Set parameters with provided values or defaults from config
+        self.n_beam = n_beam if n_beam is not None else self.config['n_beam']
+        self.n_beam_hyps_to_keep = n_beam_hyps_to_keep if n_beam_hyps_to_keep is not None else self.config['n_beam_hyps_to_keep']
+        self.n_observed_chars = n_observed_chars if n_observed_chars is not None else self.config['n_observed_chars']
         self.alpha = alpha if alpha is not None else self.config['alpha']
-        self.distortion_model_smoothing = distortion_model_smoothing or self.config['distortion_model_smoothing']
+        self.distortion_model_smoothing = distortion_model_smoothing if distortion_model_smoothing is not None else self.config['distortion_model_smoothing']
         self.use_faithfulness_reward = use_faithfulness_reward if use_faithfulness_reward is not None else self.config['use_faithfulness_reward']
-        self.distortion_probs = customized_distortion_probs or self.config['distortion_probs']
-        self.max_length = max_length or self.config['max_length']
+        self.distortion_probs = customized_distortion_probs if customized_distortion_probs is not None else self.config['distortion_probs']
+        self.max_length = max_length if max_length is not None else self.config['max_length']
 
         # Load the language model
         if isinstance(model, str):

@@ -64,11 +64,11 @@ pip install flash-attn --no-build-isolation
 <!-- Add a warning about Qwen2.5 -->
 
 > [!WARNING] 
-> Reported by a user, using Qwen2.5 family models without flash-attn will lead unexpected errors.
+> Reported by a user, using Qwen2 or Qwen2.5 family models without flash-attn will lead unexpected errors.
 > 
-> Please install flash-attn to avoid this issue.
-> 
-> We are working on a fix for this issue, making it compatible with Qwen2.5 family without flash-attn.
+> Please install flash-attn to avoid this issue. Or you can set `torch_dtype=torch.bfloat16` in the `LMCorrector` class to avoid this issue.
+>
+> Though we strongly recommend using flash-attn, which will significantly reduce the memory usage and speed up the inference process.
 
 ## Usage
 
@@ -84,6 +84,7 @@ from lmcsc import LMCorrector
 corrector = LMCorrector(
     model="Qwen/Qwen2.5-0.5B",
     config_path="configs/default_config.yaml",
+    torch_dtype=torch.bfloat16, # the default torch_dtype is torch.float16, but it will lead unexpected errors when using Qwen2 or Qwen2.5 family models without flash-attn.
 )
 
 outputs = corrector("完善农产品上行发展机智。")
@@ -108,7 +109,8 @@ python api_server.py  \
     --model "Qwen/Qwen2.5-0.5B"  \
     --host 127.0.0.1  \
     --port 8000  \
-    --workers 1
+    --workers 1  \
+    --bf16 # use bf16 to avoid unexpected errors when using Qwen2 or Qwen2.5 family models without flash-attn.
 ```
 
 You can use `curl` to test the RESTful API server.
