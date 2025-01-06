@@ -80,6 +80,7 @@ We provide a simple Python API for the corrector:
 
 ```python
 from lmcsc import LMCorrector
+import torch
 
 corrector = LMCorrector(
     model="Qwen/Qwen2.5-0.5B",
