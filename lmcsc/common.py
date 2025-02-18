@@ -1,4 +1,5 @@
 from string import punctuation
+import re
 
 RADICAL_INDEX = 0
 COMPONENT_INDEX = 1
@@ -14,3 +15,4 @@ english_punct = punctuation
 PUNCT = set(chinese_punct + english_punct)
 
 consonant_inits = {"q", "w", "r", "t", "y", "o", "p", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "b", "n", "m"}
+reAlNUM = re.compile(r"^[a-zA-Z0-9]+$")

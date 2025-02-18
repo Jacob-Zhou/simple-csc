@@ -12,6 +12,7 @@ if __name__ == "__main__":
     parser.add_argument("--input-file", type=str, required=True)
     parser.add_argument("--path", type=str, required=True)
     parser.add_argument("--model-name", type=str, required=True)
+    parser.add_argument("--prompted-model-name", type=str, default=None)
     parser.add_argument("--config-path", type=str, default="configs/default_config.yaml")
     # decoding parameters
     parser.add_argument(
@@ -70,11 +71,18 @@ if __name__ == "__main__":
         "--alpha", type=float, default=2.5, help="Hyperparameter for the length reward"
     )
     parser.add_argument(
+        "--temperature", type=float, default=1.0, help="Temperature for the prompt-based LLM"
+    )
+    parser.add_argument(
         "--use-faithfulness-reward",
         action="store_true",
         help="Whether to use faithfulness reward",
     )
-
+    parser.add_argument(
+        "--use-chat-prompted-model",
+        action="store_true",
+        help="Whether to use chat model for prompting",
+    )
     args = parser.parse_args()
 
     dataset = "_".join(args.input_file.split("/")[1:])
@@ -87,22 +95,25 @@ if __name__ == "__main__":
 
     sources = []
     for line in open(args.input_file, "r"):
-        source, _ = line.split("\t")
+        source, *_ = line.split("\t")
         sources.append(source.strip())
 
     # baichuan-inc/Baichuan2-7B-Base, Baichuan2 is the model_family
     model_family = args.model_name.split("/")[-1].split("-")[0]
     lm_corrector = LMCorrector(
         args.model_name,
+        prompted_model=args.prompted_model_name,
         config_path=args.config_path,
         n_beam=args.n_beam,
         n_beam_hyps_to_keep=args.n_beam_hyps_to_keep,
         max_length=args.max_length,
         alpha=args.alpha,
+        temperature=args.temperature,
         n_observed_chars=args.n_observed_chars,
         shape_similar_threshold=args.shape_similar_threshold,
         distortion_model_smoothing=args.distortion_model_smoothing,
         use_faithfulness_reward=args.use_faithfulness_reward,
+        use_chat_prompted_model=args.use_chat_prompted_model,
     )
 
     # reorder sources by length, from longest to shortest

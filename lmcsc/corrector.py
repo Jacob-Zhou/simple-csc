@@ -6,6 +6,7 @@ import torch
 import yaml
 
 from lmcsc.generation import (
+    process_reward_beam_search,
     token_transformation_to_probs,
     get_distortion_probs,
     distortion_guided_beam_search,
@@ -29,6 +30,7 @@ class LMCorrector:
         n_beam (int, optional): Number of beams for beam search. Defaults to None.
         n_beam_hyps_to_keep (int, optional): Number of beam hypotheses to keep. Defaults to None.
         alpha (float, optional): Hyperparameter for the length reward during beam search. Defaults to None.
+        temperature (float, optional): Temperature for the prompt-based LLM. Defaults to None.
         distortion_model_smoothing (float, optional): Smoothing factor for distortion model probabilities. Defaults to None.
         use_faithfulness_reward (bool, optional): Whether to use faithfulness reward in beam search. Defaults to None.
         customized_distortion_probs (dict, optional): Custom distortion probabilities for different transformation types. Defaults to None.
@@ -44,15 +46,18 @@ class LMCorrector:
     def __init__(
         self,
         model: Union[str, LMModel],
+        prompted_model: Union[str, LMModel] = None,
         config_path: str = 'configs/default_config.yaml',
         n_observed_chars: int = None,
         n_beam: int = None,
         n_beam_hyps_to_keep: int = None,
         alpha: float = None,  # hyperparameter for the length reward
+        temperature: float = None,
         distortion_model_smoothing: float = None,
         use_faithfulness_reward: bool = None,
         customized_distortion_probs: dict = None,
         max_length: int = None,
+        use_chat_prompted_model: bool = False,
         *args,
         **kwargs,
     ):
@@ -66,12 +71,12 @@ class LMCorrector:
         with open(self.config_path, 'r') as config_file:
             self.config = yaml.safe_load(config_file)
 
-        # Set parameters, using either the provided ones or those from the configuration
-        # Set parameters with provided values or defaults from config
+        # Set parameters, using either the provided ones or those from the configuration, use `or` is very unsafe
         self.n_beam = n_beam if n_beam is not None else self.config['n_beam']
         self.n_beam_hyps_to_keep = n_beam_hyps_to_keep if n_beam_hyps_to_keep is not None else self.config['n_beam_hyps_to_keep']
         self.n_observed_chars = n_observed_chars if n_observed_chars is not None else self.config['n_observed_chars']
         self.alpha = alpha if alpha is not None else self.config['alpha']
+        self.temperature = temperature if temperature is not None else self.config['temperature']
         self.distortion_model_smoothing = distortion_model_smoothing if distortion_model_smoothing is not None else self.config['distortion_model_smoothing']
         self.use_faithfulness_reward = use_faithfulness_reward if use_faithfulness_reward is not None else self.config['use_faithfulness_reward']
         self.distortion_probs = customized_distortion_probs if customized_distortion_probs is not None else self.config['distortion_probs']
@@ -82,6 +87,23 @@ class LMCorrector:
             self.lm_model = AutoLMModel.from_pretrained(model, *args, **kwargs)
         else:
             self.lm_model = model
+
+        if prompted_model is None:
+            self.prompted_model = None
+        else:
+            if isinstance(prompted_model, str):
+                if not use_chat_prompted_model and prompted_model == model:
+                    # If the prompted model is the same as the language model, use the same model
+                    self.prompted_model = self.lm_model
+                else:
+                    self.prompted_model = AutoLMModel.from_pretrained(prompted_model, use_chat_prompted_model=use_chat_prompted_model, *args, **kwargs)
+                    if prompted_model == model:
+                        # the same model, release the memory
+                        self.prompted_model.model.to("cpu")
+                        del self.prompted_model.model
+                        self.prompted_model.model = self.lm_model.model
+            else:
+                self.prompted_model = prompted_model
 
         self.model = self.lm_model.model
         self.tokenizer = self.lm_model.tokenizer
@@ -131,10 +153,17 @@ class LMCorrector:
         for idx, l in self.model.transformation_type.token_length.items():
             if idx < self.model.vocab_size:
                 self.model.token_length[idx] = l
+
+        self.model.is_chinese_token = torch.zeros((self.model.vocab_size,), dtype=torch.bool).to(self.model.device)
+        for idx, is_chinese in self.model.transformation_type.is_chinese_token.items():
+            if idx < self.model.vocab_size:
+                self.model.is_chinese_token[idx] = is_chinese
+
         self.model.transformation_type_cache = {}
 
         # Set additional model parameters
         self.model.alpha = self.alpha
+        self.model.temperature = self.temperature
         self.model.distortion_model_smoothing = self.distortion_model_smoothing
         self.model.use_faithfulness_reward = self.use_faithfulness_reward
         self.model.max_entropy = (
@@ -148,6 +177,7 @@ class LMCorrector:
         self.model.token_transformation_to_probs = token_transformation_to_probs.__get__(self.model, type(self.model))
         self.model.get_distortion_probs = get_distortion_probs.__get__(self.model, type(self.model))
         self.model.distortion_guided_beam_search = distortion_guided_beam_search.__get__(self.model, type(self.model))
+        self.model.process_reward_beam_search = process_reward_beam_search.__get__(self.model, type(self.model))
 
     def print_params(self):
         """
@@ -157,6 +187,7 @@ class LMCorrector:
         print(f"Number of parameters: {self.lm_model.get_n_parameters()}")
         print(f"Beam size: {self.n_beam}")
         print(f"Alpha: {self.alpha}")
+        print(f"Temperature: {self.temperature}")
         print(f"Use faithfulness reward: {self.use_faithfulness_reward}")
         print(f"Distortion model probs: {self.model.distortion_probs}")
         print(f"Max entropy: {self.model.max_entropy}")
@@ -288,7 +319,7 @@ class LMCorrector:
 
         def thread_target():
             try:
-                self.model.distortion_guided_beam_search(**generation_kwargs)
+                self.model.process_reward_beam_search(**generation_kwargs)
             except torch.cuda.OutOfMemoryError as e:
                 error_queue.put(e)
                 streamer.end()
@@ -392,6 +423,20 @@ class LMCorrector:
             beam_scorer,
         ) = self.lm_model.prepare_beam_search_inputs(processed_src, contexts, prompt_split, n_beam, n_beam_hyps_to_keep)
 
+        if self.prompted_model is not None:
+            # Prepare inputs for prompted model
+            (
+                prompted_model_kwargs,
+                prompted_context_input_ids,
+                prompted_context_attention_mask,
+            ) = self.prompted_model.prepare_prompted_inputs(processed_src)
+            prompted_model = self.prompted_model.model
+        else:
+            prompted_model_kwargs = None
+            prompted_context_input_ids = None
+            prompted_context_attention_mask = None
+            prompted_model = None
+
         # Initialize the observed sequence generator
         observed_sequence_generator = observed_sequence_generator_cls(
             processed_src,
@@ -407,6 +452,10 @@ class LMCorrector:
                 observed_sequence_generator=observed_sequence_generator,
                 input_ids=context_input_ids,
                 attention_mask=context_attention_mask,
+                prompted_model=prompted_model,
+                prompted_input_ids=prompted_context_input_ids,
+                prompted_attention_mask=prompted_context_attention_mask,
+                prompted_model_kwargs=prompted_model_kwargs,
                 beam_scorer=beam_scorer,
                 **model_kwargs,
             )
@@ -414,10 +463,14 @@ class LMCorrector:
         else:
             # Run the beam search generation
             with torch.no_grad():
-                outputs = self.model.distortion_guided_beam_search(
+                outputs = self.model.process_reward_beam_search(
                     observed_sequence_generator,
                     input_ids=context_input_ids,
                     attention_mask=context_attention_mask,
+                    prompted_model=prompted_model,
+                    prompted_input_ids=prompted_context_input_ids,
+                    prompted_attention_mask=prompted_context_attention_mask,
+                    prompted_model_kwargs=prompted_model_kwargs,
                     beam_scorer=beam_scorer,
                     **model_kwargs,
                 )

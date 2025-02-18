@@ -68,6 +68,7 @@ class NextObversationGenerator(BaseObversationGenerator):
         else:
             self.batch_predicts = [[""] * n_beam for _ in range(len(src))]
         self.batch_steps = [[0] * n_beam for _ in range(len(src))]
+        self.insert_counters = [[0] * n_beam for _ in range(len(src))]
 
         self.verbose = verbose
         if self.verbose:
@@ -92,6 +93,9 @@ class NextObversationGenerator(BaseObversationGenerator):
         self.is_finished = [
             [self.is_finished[i][b] for b in beam] for i, beam in enumerate(beam_idx)
         ]
+        self.insert_counters = [
+            [self.insert_counters[i][b] for b in beam] for i, beam in enumerate(beam_idx)
+        ]
         if self.verbose:
             self.batch_verbose_steps = [
                 [
@@ -113,6 +117,23 @@ class NextObversationGenerator(BaseObversationGenerator):
                     continue
                 if token not in {"<|endoftext|>", "</s>", "[SEP]"}:
                     self.batch_predicts[i][j] += token
+                    if step == 0:
+                        self.insert_counters[i][j] += 1
+                    else:
+                        # reset the insert counter
+                        self.insert_counters[i][j] = 0
+                    if self.insert_counters[i][j] > 1:
+                        # force to move forward
+                        step = 1
+                        if self.is_bytes_level:
+                            src = self.src[i]
+                            while True:
+                                try:
+                                    src[self.batch_steps[i][j] + step:].decode("utf-8")
+                                    break
+                                except:
+                                    step += 1
+                        self.insert_counters[i][j] = 0
                     self.batch_steps[i][j] += step
                     if self.verbose:
                         self.batch_verbose_steps[i][j].append(token)

@@ -12,8 +12,9 @@ dist
 
 # experimental results
 exp
-results
+results*
 ensemble_results
+ChERRANT
 
 # log and config files
 log*

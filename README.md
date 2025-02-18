@@ -5,11 +5,16 @@
 
 [English](README.md) | [中文](README.zh.md)
 
-A simple yet effective training-free and prompt-free approach to Chinese Spelling Correction based on Large Language Models.
+<!-- A simple yet effective training-free and prompt-free approach to Chinese Spelling Correction based on Large Language Models. -->
 
-This repository provides an implementation of the paper [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
+This repository provides an implementation of following papers:
+- [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
+- An under-review paper.
 
 __News__
+- 2025/02/18: New version (v2.0.0) released.
+  - Now we support insert and delete character operations.
+  - Add prompted model, which can be used to improve the performance of the corrector.
 - 2024/12/09: We **won 1st place** in the [Kingsoft Office 2024 Algorithm Challenge: Chinese Text Correction Competition (金山办公2024算法挑战赛-中文文本智能校对大赛)](https://datastudio.wps.cn/matchcenter/competition/1/introduction), with this codebase serving as a key module of our solution. Notably, our solution achieved an $F_{0.5}$ score that was **2.02** points higher than the second-place team.
 - 2024/09/20: Our paper is accepted by **EMNLP 2024 main** conference.
 
@@ -83,8 +88,9 @@ from lmcsc import LMCorrector
 import torch
 
 corrector = LMCorrector(
-    model="Qwen/Qwen2.5-0.5B",
-    config_path="configs/default_config.yaml",
+    model="Qwen/Qwen2.5-1.5B",
+    prompted_model="Qwen/Qwen2.5-1.5B", # Suggested to use the same model as model. In this way, we only need to load the model once.
+    config_path="configs/c2ec_config.yaml", # You can always use the default config file to disable the insert and delete operations.
     torch_dtype=torch.bfloat16, # the default torch_dtype is torch.float16, but it will lead unexpected errors when using Qwen2 or Qwen2.5 family models without flash-attn.
 )
 
@@ -107,7 +113,8 @@ We also provide the RESTful API server for the corrector.
 
 ```bash
 python api_server.py  \
-    --model "Qwen/Qwen2.5-0.5B"  \
+    --model "Qwen/Qwen2.5-1.5B"  \
+    --prompted-model "Qwen/Qwen2.5-1.5B"  \
     --host 127.0.0.1  \
     --port 8000  \
     --workers 1  \
@@ -204,11 +211,10 @@ This script will download the datasets from the original sources, which are host
 - InternLM2
 
 ## Future Plans
-- [ ] Enable insert and delete operations (Almost done).
-- [ ] Top-k voting for better performance.
-- [ ] Package the code into a library.
+- [x] Enable insert and delete operations.
 - [ ] Speed up the inference process.
-- [ ] Refactor the code to be compatible with vLLM (Long term plan).
+- [ ] Package the code into a library.
+- [ ] Enable continuous batching.
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.

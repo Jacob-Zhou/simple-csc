@@ -1,6 +1,7 @@
 from functools import partial
 import importlib
 import math
+import os
 from typing import List
 import torch
 from lmcsc.utils import (
@@ -158,6 +159,36 @@ class LMModel:
             beam_scorer
         )
 
+    def prepare_prompted_inputs(self, src: List[str]):
+        """
+        Prepares inputs for beam search.
+
+        Args:
+            src (List[str]): The source sentences.
+            contexts (List[str], optional): The context for each source sentence. Defaults to None.
+            prompt_split (str, optional): The prompt split token. Defaults to "\\n".
+            n_beam (int, optional): The number of beams. Defaults to 8.
+            n_beam_hyps_to_keep (int, optional): The number of beam hypotheses to keep. Defaults to 1.
+
+        Returns:
+            tuple: A tuple containing model_kwargs, context_input_ids, context_attention_mask, and beam_scorer.
+        """
+        model_kwargs = self.get_model_kwargs()
+        if os.getenv("DETAILED_PROMPT", "false").lower() == "true":
+            prompted_contexts = [f"你是一个优秀的中文纠错模型，中文纠错模型即更正用户输入句子中的错误。你需要识别并纠正用户输入的句子中可能的错别字、多字、漏字并输出正确的句子，在修改的同时尽可能减少对原句子的改动(不新增、删除和修改标点符号)。只输出没有错误的句子，不要添加任何其他解释或说明。如果句子没有错误，就直接输出和输入相同的句子。\n输入：{s}\n输出：" for s in src]
+        else:
+            prompted_contexts = [f"纠正下面句子中的错别字以及多字少字错误，并给出修改后的句子。\n输入：{s}\n输出：" for s in src]
+        prompted_context_infos = self.tokenizer(prompted_contexts, return_tensors="pt", padding=True)
+        prompted_context_infos.to(self.model.device)
+        prompted_context_input_ids = prompted_context_infos["input_ids"]
+        prompted_context_attention_mask = prompted_context_infos["attention_mask"]
+
+        return (
+            model_kwargs,
+            prompted_context_input_ids,
+            prompted_context_attention_mask,
+        )
+
     def process_generated_outputs(self, outputs, contexts: List[str] = None, prompt_split: str = "\n", n_beam_hyps_to_keep: int = 1, need_decode: bool = True):
         """
         Processes the generated outputs.
@@ -239,6 +270,55 @@ class LMModel:
 
         return human_format(all_param)
 
+class ChatLMModel(LMModel):
+    def prepare_prompted_inputs(self, src: List[str]):
+        """
+        Prepares inputs for beam search.
+
+        Args:
+            src (List[str]): The source sentences.
+            contexts (List[str], optional): The context for each source sentence. Defaults to None.
+            prompt_split (str, optional): The prompt split token. Defaults to "\\n".
+            n_beam (int, optional): The number of beams. Defaults to 8.
+            n_beam_hyps_to_keep (int, optional): The number of beam hypotheses to keep. Defaults to 1.
+
+        Returns:
+            tuple: A tuple containing model_kwargs, context_input_ids, context_attention_mask, and beam_scorer.
+        """
+        model_kwargs = self.get_model_kwargs()
+
+        prompted_contexts = []
+        for s in src:
+            if os.getenv("DETAILED_PROMPT", "false").lower() == "true":
+                context = self.tokenizer.apply_chat_template(
+                    [
+                        {"role": "system", "content": "你是一个优秀的中文纠错模型，中文纠错模型即更正用户输入句子中的错误。"},
+                        {"role": "user", "content": "你需要识别并纠正用户输入的句子中可能的错别字、多字、漏字并输出正确的句子，在修改的同时尽可能减少对原句子的改动(不新增、删除和修改标点符号)。只输出没有错误的句子，不要添加任何其他解释或说明。如果句子没有错误，就直接输出和输入相同的句子。"},
+                        {"role": "user", "content": s}
+                    ],
+                    tokenize=False,
+                    add_generation_prompt=True
+                )
+            else:
+                context = self.tokenizer.apply_chat_template(
+                    [
+                        {"role": "user", "content": f"纠正下面句子中的错别字以及多字少字错误，并给出修改后的句子。\n输入：{s}"},
+                    ],
+                    tokenize=False,
+                    add_generation_prompt=True
+                ) + "输出："
+            prompted_contexts.append(context)
+        prompted_context_infos = self.tokenizer(prompted_contexts, return_tensors="pt", padding=True)
+        prompted_context_infos.to(self.model.device)
+        prompted_context_input_ids = prompted_context_infos["input_ids"]
+        prompted_context_attention_mask = prompted_context_infos["attention_mask"]
+
+        return (
+            model_kwargs,
+            prompted_context_input_ids,
+            prompted_context_attention_mask,
+        )
+
 
 class QwenModel(LMModel):
     """
@@ -298,6 +378,8 @@ class QwenModel(LMModel):
             "past_key_values": DynamicCache()
         }
 
+class ChatQwenModel(ChatLMModel, QwenModel):
+    pass
 
 class LlamaModel(LMModel):
     """
@@ -369,6 +451,8 @@ class LlamaModel(LMModel):
             "past_key_values": DynamicCache()
         }
 
+class ChatLlamaModel(ChatLMModel, LlamaModel):
+    pass
 
 class BaichuanModel(LMModel):
     """
@@ -418,6 +502,8 @@ class BaichuanModel(LMModel):
             "is_encoder_decoder": False,
         }
 
+class ChatBaichuanModel(ChatLMModel, BaichuanModel):
+    pass
 
 class InternLM2Model(LMModel):
     """
@@ -466,6 +552,9 @@ class InternLM2Model(LMModel):
             "pad_token_id": pad_token_id,
             "is_encoder_decoder": False,
         }
+
+class ChatInternLM2Model(ChatLMModel, InternLM2Model):
+    pass
 
 class UerModel(LMModel):
     """
@@ -536,6 +625,9 @@ class UerModel(LMModel):
             for _preds in preds
         ]
 
+class ChatUerModel(ChatLMModel, UerModel):
+    pass
+
 class AutoLMModel:
     """
     A factory class for automatically selecting and instantiating the appropriate language model.
@@ -545,7 +637,7 @@ class AutoLMModel:
     """
 
     @staticmethod
-    def from_pretrained(model: str, *args, **kwargs):
+    def from_pretrained(model: str, use_chat_prompted_model: bool = False, *args, **kwargs):
         """
         Creates and returns an instance of the appropriate language model class based on the model name.
 
@@ -560,15 +652,29 @@ class AutoLMModel:
         Raises:
             ValueError: If an unsupported model type is specified.
         """
-        if "qwen" in model.lower():
-            return QwenModel(model, *args, **kwargs)
-        elif "llama" in model.lower():
-            return LlamaModel(model, *args, **kwargs)
-        elif "Baichuan2" in model:
-            return BaichuanModel(model, *args, **kwargs)
-        elif "internlm2" in model.lower():
-            return InternLM2Model(model, *args, **kwargs)
-        elif "uer" in model.lower():
-            return UerModel(model, *args, **kwargs)
+        if use_chat_prompted_model:
+            if "qwen" in model.lower():
+                return ChatQwenModel(model, *args, **kwargs)
+            elif "llama" in model.lower():
+                return ChatLlamaModel(model, *args, **kwargs)
+            elif "Baichuan2" in model:
+                return ChatBaichuanModel(model, *args, **kwargs)
+            elif "internlm2" in model.lower():
+                return ChatInternLM2Model(model, *args, **kwargs)
+            elif "uer" in model.lower():
+                return ChatUerModel(model, *args, **kwargs)
+            else:
+                raise ChatLMModel(model, *args, **kwargs)
         else:
-            return LMModel(model, *args, **kwargs)
+            if "qwen" in model.lower():
+                return QwenModel(model, *args, **kwargs)
+            elif "llama" in model.lower():
+                return LlamaModel(model, *args, **kwargs)
+            elif "Baichuan2" in model:
+                return BaichuanModel(model, *args, **kwargs)
+            elif "internlm2" in model.lower():
+                return InternLM2Model(model, *args, **kwargs)
+            elif "uer" in model.lower():
+                return UerModel(model, *args, **kwargs)
+            else:
+                return LMModel(model, *args, **kwargs)
