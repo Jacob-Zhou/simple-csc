@@ -202,6 +202,7 @@ def predict_stream(gen_params):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="Qwen/Qwen2.5-0.5B")
+    parser.add_argument("--prompted_model", type=str, default="Qwen/Qwen2.5-0.5B")
     parser.add_argument("--config_path", type=str, default="configs/default_config.yaml")
     parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--port", type=int, default=8000)
@@ -214,6 +215,7 @@ if __name__ == "__main__":
     logger.info(f"Loading model {args.model} from {args.config_path}")
     corrector = LMCorrector(
         model=args.model,
+        prompted_model=args.prompted_model,
         config_path=args.config_path,
         torch_dtype=torch.bfloat16 if args.bf16 else torch.float16,
     )

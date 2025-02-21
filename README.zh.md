@@ -7,11 +7,16 @@
 
 一键让中文大模型化身中文拼写纠错模型!!!
 
-本仓库提供了论文 [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027) 的实现。
+本仓库提供了以下论文的实现：
+- [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027)。
+- 一篇在审论文。
 
 __新闻__
-- 2024/12/09: 我们荣获[金山办公2024算法挑战赛-中文文本智能校对大赛](https://datastudio.wps.cn/matchcenter/competition/1/introduction)冠军。在比赛中，我们以本代码库作为核心模块，取得了 83.37 的 $F_{0.5}$ 分数，比第二名高 2.02 分。
-- 2024/09/20: 我们的论文被 EMNLP 2024 主会接收。
+- 2025/02/21: 新版本 (v2.0.0) 发布。
+  - 现在我们支持字符的插入和删除操作。
+  - 添加了 Prompt-based 模型概率，提高纠错的性能。
+- 2024/12/09: 我们荣获[金山办公2024算法挑战赛-中文文本智能校对大赛](https://datastudio.wps.cn/matchcenter/competition/1/introduction)冠军。在比赛中，我们以本代码库作为核心模块，取得了 $F_{0.5}$ 分数比第二名高 **2.02** 分的成绩。
+- 2024/09/20: 我们的论文被 **EMNLP 2024 主会** 接收。
 
 ## 目录
 
@@ -82,9 +87,10 @@ pip install flash-attn --no-build-isolation
 from lmcsc import LMCorrector
 
 corrector = LMCorrector(
-    model="Qwen/Qwen2.5-0.5B",
-    config_path="configs/default_config.yaml",
-    torch_dtype=torch.bfloat16, # 使用 bfloat16 来避免 Qwen2 或 Qwen2.5 系列模型在未安装 flash-attn 时产生意料之外的行为。
+    model="Qwen/Qwen2.5-1.5B",
+    prompted_model="Qwen/Qwen2.5-1.5B", # 建议使用相同的模型以减少显存占用。
+    config_path="configs/c2ec_config.yaml", # 你可以修改为 `default_config.yaml` 来禁用添字、删字操作。
+    torch_dtype=torch.bfloat16, # 默认我们会使用 torch.float16 来进行计算。 但是我们发现在使用 Qwen2 或者 Qwen2.5 在没安装 flash-attn 的时候会导致运行时间过长。如果已经安装了 flash-attn 你可以不用专门设置这个参数。
 )
 
 outputs = corrector("完善农产品上行发展机智。")
@@ -106,7 +112,9 @@ print()
 
 ```bash
 python api_server.py  \
-    --model "Qwen/Qwen2.5-0.5B"  \
+    --model "Qwen/Qwen2.5-1.5B"  \
+    --prompted_model "Qwen/Qwen2.5-1.5B"  \
+    --config_path "configs/c2ec_config.yaml", # 你可以修改为 `default_config.yaml` 来禁用添字、删字操作。
     --host 127.0.0.1  \
     --port 8000  \
     --workers 1  \
@@ -194,6 +202,96 @@ python -u run.py  \
 数据准备过程可以在 `scripts/download_datasets.sh` 中找到。
 该脚本将从原始来源（托管在 `raw.githubusercontent.com` 和 `Google Drive` 上）下载数据集，并将它们预处理成所需格式。
 
+##### 构造 C2EC 的流程
+我们构造了一个 C2EC 数据来测试我们方法处理多字漏字的效果。
+你可以通过如下步骤进行构建。
+
+- 从 [CTCResource](https://github.com/destwang/CTCResources?tab=readme-ov-file#datasets) 下载 CCTC v1.1 数据集。
+  - 将下载下来的 `cctc_v1.1.zip` (MD5: `ecd94ad85c33d7c0ace11b6da316f81e`) 文件放入 `data/c2ec` 文件夹。你不需要去解压它，后续程序会帮你解压。
+  - 在放入 cctc_v1.1.zip 文件后，`data/c2ec` 的目录结构应该看起来长这样:
+    ```
+    datasets/
+      c2ec/
+        metadata/
+          dev.index
+          test.index
+        cctc_v1.1.zip
+    ```
+- 运行下面命令来构造构造数据集。在运行过程中 Lemon 会被自动从 [Lemon](https://github.com/gingasan/lemon) 中下载。
+  ```bash
+  bash scripts/build_c2ec_dataset.sh
+  ```
+
+- 最后你就得到了 C2EC 数据集了。
+
+
+###### 注意引用原始数据集论文
+> [!NOTE]
+> 我们利用 CCTC 和 Lemon 构造了 C2EC 数据集。
+> 如果您在文字中使用了 C2EC 数据也请引用他们的原始论文 :D
+
+- CCTC Dataset
+  ```bibtex
+  @inproceedings{wang-etal-2022-cctc,
+      title = "{CCTC}: A Cross-Sentence {C}hinese Text Correction Dataset for Native Speakers",
+      author = "Wang, Baoxin  and
+        Duan, Xingyi  and
+        Wu, Dayong  and
+        Che, Wanxiang  and
+        Chen, Zhigang  and
+        Hu, Guoping",
+      editor = "Calzolari, Nicoletta  and
+        Huang, Chu-Ren  and
+        Kim, Hansaem  and
+        Pustejovsky, James  and
+        Wanner, Leo  and
+        Choi, Key-Sun  and
+        Ryu, Pum-Mo  and
+        Chen, Hsin-Hsi  and
+        Donatelli, Lucia  and
+        Ji, Heng  and
+        Kurohashi, Sadao  and
+        Paggio, Patrizia  and
+        Xue, Nianwen  and
+        Kim, Seokhwan  and
+        Hahm, Younggyun  and
+        He, Zhong  and
+        Lee, Tony Kyungil  and
+        Santus, Enrico  and
+        Bond, Francis  and
+        Na, Seung-Hoon",
+      booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+      month = oct,
+      year = "2022",
+      address = "Gyeongju, Republic of Korea",
+      publisher = "International Committee on Computational Linguistics",
+      url = "https://aclanthology.org/2022.coling-1.294/",
+      pages = "3331--3341"
+  }
+  ```
+
+- Lemon Dataset
+  ```bibtex
+  @inproceedings{wu-etal-2023-rethinking,
+      title = "Rethinking Masked Language Modeling for {C}hinese Spelling Correction",
+      author = "Wu, Hongqiu  and
+        Zhang, Shaohua  and
+        Zhang, Yuchen  and
+        Zhao, Hai",
+      editor = "Rogers, Anna  and
+        Boyd-Graber, Jordan  and
+        Okazaki, Naoaki",
+      booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+      month = jul,
+      year = "2023",
+      address = "Toronto, Canada",
+      publisher = "Association for Computational Linguistics",
+      url = "https://aclanthology.org/2023.acl-long.600/",
+      doi = "10.18653/v1/2023.acl-long.600",
+      pages = "10743--10756"
+  }
+  ```
+
 ## 支持的模型
 - GPT2
 - Baichuan2
@@ -203,11 +301,10 @@ python -u run.py  \
 - InternLM2
 
 ## 未来计划
-- [ ] 允许字的插入和删除（几乎完成）。
-- [ ] Top-k 投票以获得更好的性能。
-- [ ] 将代码打包成库。
+- [x] 允许字的插入和删除。
 - [ ] 加快推理过程。
-- [ ] 重构代码以兼容 vLLM（长期计划）。
+- [ ] 将代码打包成库。
+- [ ] 允许 continuous batching。
 
 ## 贡献
 欢迎贡献！请随时提交 Pull Request。

@@ -57,9 +57,8 @@ set -o pipefail
         # "sighan_rev/sighan13.txt"
         # "sighan_rev/sighan14.txt"
         # "sighan_rev/sighan15.txt"
-        "c2ec/dev.txt"
-        "lemon_v2/cot.txt"
         "lemon_v2/car.txt"
+        "lemon_v2/cot.txt"
         "lemon_v2/enc.txt"
         "lemon_v2/gam.txt"
         "lemon_v2/mec.txt"
@@ -67,8 +66,9 @@ set -o pipefail
         "lemon_v2/nov.txt"
         # "mcsc/test.txt"
         "cscd_ime/test.txt"
-        "cscd_ime/dev.txt"
+        # "cscd_ime/dev.txt"
         "c2ec/test.txt"
+        # "c2ec/dev.txt"
     )
 
 

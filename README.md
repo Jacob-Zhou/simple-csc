@@ -5,14 +5,12 @@
 
 [English](README.md) | [中文](README.zh.md)
 
-<!-- A simple yet effective training-free and prompt-free approach to Chinese Spelling Correction based on Large Language Models. -->
-
 This repository provides an implementation of following papers:
 - [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 - An under-review paper.
 
 __News__
-- 2025/02/18: New version (v2.0.0) released.
+- 2025/02/21: New version (v2.0.0) released.
   - Now we support insert and delete character operations.
   - Add prompted model, which can be used to improve the performance of the corrector.
 - 2024/12/09: We **won 1st place** in the [Kingsoft Office 2024 Algorithm Challenge: Chinese Text Correction Competition (金山办公2024算法挑战赛-中文文本智能校对大赛)](https://datastudio.wps.cn/matchcenter/competition/1/introduction), with this codebase serving as a key module of our solution. Notably, our solution achieved an $F_{0.5}$ score that was **2.02** points higher than the second-place team.
@@ -201,6 +199,96 @@ A `\t` is used to separate them.
 
 The process of the data preparation can be found in the `scripts/download_datasets.sh`.
 This script will download the datasets from the original sources, which are hosted on `raw.githubusercontent.com` and `Google Drive`, and preprocess them into the required format.
+
+##### Instruction of building the C2EC dataset
+We build the C2EC dataset to test the performance our approach in handling missing and redundant characters.
+You can build the C2EC dataset by following the steps below.
+
+- Download the CCTC v1.1 dataset from [CTCResource](https://github.com/destwang/CTCResources?tab=readme-ov-file#datasets).
+  - Place the `cctc_v1.1.zip` (MD5: `ecd94ad85c33d7c0ace11b6da316f81e`) file in the `data/c2ec` directory. You don't need to unzip it.
+  - After placing the zip file, the directory structure should be like this:
+    ```
+    datasets/
+      c2ec/
+        metadata/
+          dev.index
+          test.index
+        cctc_v1.1.zip
+    ```
+- Run the following command to build the C2EC dataset. The Lemon dataset will automatically be downloaded from [Lemon](https://github.com/gingasan/lemon).
+  ```bash
+  bash scripts/build_c2ec_dataset.sh
+  ```
+
+- Voilà, you have the C2EC dataset!
+
+
+###### Citation for Original Datasets
+> [!NOTE]
+> The C2EC dataset building by combining the CCTC dataset and the Lemon dataset.
+> If you use the C2EC dataset, please also cite the original papers 😀.
+
+- CCTC Dataset
+  ```bibtex
+  @inproceedings{wang-etal-2022-cctc,
+      title = "{CCTC}: A Cross-Sentence {C}hinese Text Correction Dataset for Native Speakers",
+      author = "Wang, Baoxin  and
+        Duan, Xingyi  and
+        Wu, Dayong  and
+        Che, Wanxiang  and
+        Chen, Zhigang  and
+        Hu, Guoping",
+      editor = "Calzolari, Nicoletta  and
+        Huang, Chu-Ren  and
+        Kim, Hansaem  and
+        Pustejovsky, James  and
+        Wanner, Leo  and
+        Choi, Key-Sun  and
+        Ryu, Pum-Mo  and
+        Chen, Hsin-Hsi  and
+        Donatelli, Lucia  and
+        Ji, Heng  and
+        Kurohashi, Sadao  and
+        Paggio, Patrizia  and
+        Xue, Nianwen  and
+        Kim, Seokhwan  and
+        Hahm, Younggyun  and
+        He, Zhong  and
+        Lee, Tony Kyungil  and
+        Santus, Enrico  and
+        Bond, Francis  and
+        Na, Seung-Hoon",
+      booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+      month = oct,
+      year = "2022",
+      address = "Gyeongju, Republic of Korea",
+      publisher = "International Committee on Computational Linguistics",
+      url = "https://aclanthology.org/2022.coling-1.294/",
+      pages = "3331--3341"
+  }
+  ```
+
+- Lemon Dataset
+  ```bibtex
+  @inproceedings{wu-etal-2023-rethinking,
+      title = "Rethinking Masked Language Modeling for {C}hinese Spelling Correction",
+      author = "Wu, Hongqiu  and
+        Zhang, Shaohua  and
+        Zhang, Yuchen  and
+        Zhao, Hai",
+      editor = "Rogers, Anna  and
+        Boyd-Graber, Jordan  and
+        Okazaki, Naoaki",
+      booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+      month = jul,
+      year = "2023",
+      address = "Toronto, Canada",
+      publisher = "Association for Computational Linguistics",
+      url = "https://aclanthology.org/2023.acl-long.600/",
+      doi = "10.18653/v1/2023.acl-long.600",
+      pages = "10743--10756"
+  }
+  ```
 
 ## Supported Models
 - GPT2
