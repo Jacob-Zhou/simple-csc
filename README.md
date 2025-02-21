@@ -6,7 +6,7 @@
 [English](README.md) | [中文](README.zh.md)
 
 This repository provides an implementation of following papers:
-- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) An under-review paper.
+- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) *coming soon*.
 - (**[v1.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v1.0.0)**) [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 
 __News__
