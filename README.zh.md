@@ -8,8 +8,8 @@
 一键让中文大模型化身中文拼写纠错模型!!!
 
 本仓库提供了以下论文的实现：
-- [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027)。
-- 一篇在审论文。
+- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) *coming soon*.
+- (**[v1.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v1.0.0)**) [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 
 __新闻__
 - 2025/02/21: 新版本 (v2.0.0) 发布。
