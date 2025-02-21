@@ -88,7 +88,7 @@ from lmcsc import LMCorrector
 
 corrector = LMCorrector(
     model="Qwen/Qwen2.5-1.5B",
-    prompted_model="Qwen/Qwen2.5-1.5B", # 建议使用相同的模型以减少显存占用。
+    prompted_model="Qwen/Qwen2.5-1.5B", # 建议 model 和 prompted_model 使用相同的模型以减少显存占用。
     config_path="configs/c2ec_config.yaml", # 你可以修改为 `default_config.yaml` 来禁用添字、删字操作。
     torch_dtype=torch.bfloat16, # 默认我们会使用 torch.float16 来进行计算。 但是我们发现在使用 Qwen2 或者 Qwen2.5 在没安装 flash-attn 的时候会导致运行时间过长。如果已经安装了 flash-attn 你可以不用专门设置这个参数。
 )
@@ -111,14 +111,17 @@ print()
 我们还提供了纠错器的 RESTful API 服务器。
 
 ```bash
+# 建议 model 和 prompted_model 使用相同的模型以减少显存占用。
+# 你可以修改为 `default_config.yaml` 来禁用添字、删字操作。
+# 使用 bfloat16 来避免 Qwen2 或 Qwen2.5 系列模型在未安装 flash-attn 时产生意料之外的行为。
 python api_server.py  \
     --model "Qwen/Qwen2.5-1.5B"  \
     --prompted_model "Qwen/Qwen2.5-1.5B"  \
-    --config_path "configs/c2ec_config.yaml", # 你可以修改为 `default_config.yaml` 来禁用添字、删字操作。
+    --config_path "configs/c2ec_config.yaml"  \
     --host 127.0.0.1  \
     --port 8000  \
     --workers 1  \
-    --bf16 # 使用 bfloat16 来避免 Qwen2 或 Qwen2.5 系列模型在未安装 flash-attn 时产生意料之外的行为。
+    --bf16
 ```
 
 您可以使用 `curl` 来测试 RESTful API 服务器。

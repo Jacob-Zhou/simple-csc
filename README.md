@@ -87,7 +87,7 @@ import torch
 
 corrector = LMCorrector(
     model="Qwen/Qwen2.5-1.5B",
-    prompted_model="Qwen/Qwen2.5-1.5B", # Suggested to use the same model as model. In this way, we only need to load the model once.
+    prompted_model="Qwen/Qwen2.5-1.5B", # Suggested to use the same model for model and prompted_model. In this way, we only need to load the model once.
     config_path="configs/c2ec_config.yaml", # You can always use the default config file to disable the insert and delete operations.
     torch_dtype=torch.bfloat16, # the default torch_dtype is torch.float16, but it will lead unexpected errors when using Qwen2 or Qwen2.5 family models without flash-attn.
 )
@@ -110,13 +110,17 @@ print()
 We also provide the RESTful API server for the corrector.
 
 ```bash
+# Suggested to use the same model for model and prompted_model. In this way, we only need to load the model once.
+# You can always use the default config file to disable the insert and delete operations.
+# use bf16 to avoid unexpected errors when using Qwen2 or Qwen2.5 family models without flash-attn.
 python api_server.py  \
     --model "Qwen/Qwen2.5-1.5B"  \
-    --prompted-model "Qwen/Qwen2.5-1.5B"  \
+    --prompted_model "Qwen/Qwen2.5-1.5B"  \
+    --config_path "configs/c2ec_config.yaml"  \
     --host 127.0.0.1  \
     --port 8000  \
     --workers 1  \
-    --bf16 # use bf16 to avoid unexpected errors when using Qwen2 or Qwen2.5 family models without flash-attn.
+    --bf16
 ```
 
 You can use `curl` to test the RESTful API server.
