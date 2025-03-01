@@ -6,7 +6,7 @@
 [English](README.md) | [中文](README.zh.md)
 
 This repository provides an implementation of following papers:
-- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) *coming soon*.
+- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) [A Training-free LLM-based Approach to General Chinese Character Error Correction](https://arxiv.org/abs/2502.15266).
 - (**[v1.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v1.0.0)**) [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 
 __News__
@@ -74,6 +74,25 @@ pip install flash-attn --no-build-isolation
 > Though we strongly recommend using flash-attn, which will significantly reduce the memory usage and speed up the inference process.
 
 ## Usage
+
+### Using Specific Version
+
+We have tagged two versions of the code:
+- v1.0.0: The first version of the code, which is the repository for the paper [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
+- v2.0.0: The second version of the code, which is the repository for the paper [A Training-free LLM-based Approach to General Chinese Character Error Correction](https://arxiv.org/abs/2502.15266).
+
+The repository will be under continuous development.
+If you want to use a specific version, you can use the following command to switch to the specific version:
+
+```bash
+git checkout v1.0.0
+```
+
+or
+
+```bash
+git checkout v2.0.0
+```
 
 ### Model Preparation
 The code will automatically download the model from the Huggingface model hub, if the model is not found in the local cache.

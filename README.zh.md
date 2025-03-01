@@ -8,7 +8,7 @@
 一键让中文大模型化身中文拼写纠错模型!!!
 
 本仓库提供了以下论文的实现：
-- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) *coming soon*.
+- (**[v2.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v2.0.0)**) [A Training-free LLM-based Approach to General Chinese Character Error Correction](https://arxiv.org/abs/2502.15266).
 - (**[v1.0.0](https://github.com/Jacob-Zhou/simple-csc/tree/v1.0.0)**) [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
 
 __新闻__
@@ -76,6 +76,25 @@ pip install flash-attn --no-build-isolation
 > 虽然我们强烈建议使用 flash-attn，它将显著减少显存使用并加快推理速度。
 
 ## 使用方法
+
+### 使用特定版本
+
+我们为代码打上了两个标签：
+- v1.0.0: 第一个版本，对应论文 [A Simple yet Effective Training-free Prompt-free Approach to Chinese Spelling Correction Based on Large Language Models](https://arxiv.org/abs/2410.04027).
+- v2.0.0: 第二个版本，对应论文 [A Training-free LLM-based Approach to General Chinese Character Error Correction](https://arxiv.org/abs/2502.15266).
+
+代码库将不断更新。
+如果您想使用特定版本，可以使用以下命令切换到特定版本：
+
+```bash
+git checkout v1.0.0
+```
+
+或者
+
+```bash
+git checkout v2.0.0
+```
 
 ### 模型准备
 如果在本地缓存中未找到模型，代码将自动从 Huggingface 模型仓库下载模型。
