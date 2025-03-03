@@ -99,6 +99,13 @@ git checkout v2.0.0
 ### 模型准备
 如果在本地缓存中未找到模型，代码将自动从 Huggingface 模型仓库下载模型。
 
+> [!TIP]
+> 在我们的实验中，我们发现 `Base` 版本的 LLM 比 `Instruct` 或 `Chat` 版本的 LLM 表现更好。因此我们推荐使用 `Base` 版本的模型。
+>
+> **推荐模型:**
+> - `v1.0.0`: 该版本中使用 `baichuan-inc/Baichuan2-13B-Base` 可以获得最好的性能。
+> - `v2.0.0`: 使用 `Qwen/Qwen2.5-[7/14]B` 可以在性能和速度之间取得一个很好的平衡。
+
 ### Python API
 我们提供了一个简单的 Python API 用于纠错：
 

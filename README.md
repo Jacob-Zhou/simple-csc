@@ -97,6 +97,14 @@ git checkout v2.0.0
 ### Model Preparation
 The code will automatically download the model from the Huggingface model hub, if the model is not found in the local cache.
 
+> [!TIP]
+> In our experiments, we found that the `Base` versions of LLMs perform better than their `Instruct` or `Chat` counterparts for this task.
+>
+> **Recommended models:**
+> - For `v1.0.0`: `baichuan-inc/Baichuan2-13B-Base` provides the best performance.
+> - For `v2.0.0`: `Qwen/Qwen2.5-[7/14]B` is recommended for good balance between performance and speed.
+
+
 ### Python API
 We provide a simple Python API for the corrector:
 
