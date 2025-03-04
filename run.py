@@ -71,7 +71,7 @@ if __name__ == "__main__":
         "--alpha", type=float, default=2.5, help="Hyperparameter for the length reward"
     )
     parser.add_argument(
-        "--temperature", type=float, default=1.0, help="Temperature for the prompt-based LLM"
+        "--temperature", type=float, default=1.5, help="Temperature for the prompt-based LLM"
     )
     parser.add_argument(
         "--use-faithfulness-reward",

@@ -211,6 +211,8 @@ python -u run.py  \
     --input-file <input-file>  \
     --path <path>  \
     --model-name <model-name>  \
+    --prompted-model-name <prompted-model-name>  \
+    --config-path <config-path>  \
     --n-observed-chars <n-observed-chars>  \
     --n-beam <n-beam>  \
     --batch-size <batch-size>  \
