@@ -85,17 +85,18 @@ def split_text(text, max_length=256):
     sentences = reSPLIT.split(text)
 
     # Split sentences that still exceed max_length
-    for i in range(len(sentences)):
+    sentence_num = len(sentences)
+    for i in range(sentence_num):
         if len(sentences[i]) > max_length:
-            sentences[i : i + 1] = [
+            sentences.extend([
                 sentences[i][j : j + max_length]
                 for j in range(0, len(sentences[i]), max_length)
-            ]
+            ])
 
     # Merge sentences that are too short
     new_sentences = []
     new_sentence = ""
-    for sentence in sentences:
+    for sentence in sentences[sentence_num:]:
         if len(new_sentence) + len(sentence) > max_length:
             new_sentences.append(new_sentence)
             new_sentence = ""
@@ -224,7 +225,7 @@ def example_format_func(example):
         return f"Long Example ({len(example)} chars)"
 
 
-config = yaml.safe_load(open("configs/demo_app_config.yaml", "r"))
+config = yaml.safe_load(open("configs/demo_app_config.yaml", "r", encoding="utf-8"))
 
 if "config" not in st.session_state:
     st.session_state.config = config

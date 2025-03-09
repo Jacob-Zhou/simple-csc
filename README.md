@@ -53,7 +53,7 @@ __News__
 You can set up the environment by running:
 
 ```bash
-bash scripts/set_enviroment.sh
+bash scripts/set_environment.sh
 ```
 
 This will automatically create a virtual environment and install the required packages.

@@ -88,13 +88,13 @@ if __name__ == "__main__":
     dataset = "_".join(args.input_file.split("/")[1:])
     dataset = ".".join(dataset.split(".")[:-1])
     print(f"Dataset:        {dataset}")
-    print(f"Deocode Prefix: {repr(args.decode_prefix)}")
+    print(f"Decode Prefix: {repr(args.decode_prefix)}")
     print(f"Prefix Split:   {repr(args.prefix_split)}")
     args.output_file = f"{args.path}/prediction.txt"
     os.makedirs(args.path, exist_ok=True)
 
     sources = []
-    for line in open(args.input_file, "r"):
+    for line in open(args.input_file, "r", encoding="utf-8"):
         source, *_ = line.split("\t")
         sources.append(source.strip())
 

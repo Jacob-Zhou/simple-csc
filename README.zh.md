@@ -55,7 +55,7 @@ __新闻__
 您可以通过运行以下命令来配置环境：
 
 ```bash
-bash scripts/set_enviroment.sh
+bash scripts/set_environment.sh
 ```
 
 这将自动创建虚拟环境并安装所需的包。

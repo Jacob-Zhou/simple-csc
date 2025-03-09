@@ -11,6 +11,7 @@ n_beam: 8
 n_beam_hyps_to_keep: 1
 n_observed_chars: 8
 alpha: 2.5
+temperature: 1.0
 distortion_model_smoothing: -15.0
 use_faithfulness_reward: true
 max_length: 128
