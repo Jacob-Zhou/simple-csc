@@ -86,22 +86,27 @@ def split_text(text, max_length=256):
 
     # Split sentences that still exceed max_length
     sentence_num = len(sentences)
+    new_sentences = []
     for i in range(sentence_num):
         if len(sentences[i]) > max_length:
-            sentences.extend([
+            new_sentences.extend([
                 sentences[i][j : j + max_length]
                 for j in range(0, len(sentences[i]), max_length)
             ])
+        else:
+            new_sentences.append(sentences[i])
+    sentences = new_sentences
 
     # Merge sentences that are too short
     new_sentences = []
     new_sentence = ""
-    for sentence in sentences[sentence_num:]:
+    for sentence in sentences:
         if len(new_sentence) + len(sentence) > max_length:
             new_sentences.append(new_sentence)
             new_sentence = ""
         new_sentence += sentence
-    new_sentences.append(new_sentence)
+    if new_sentence != "":
+        new_sentences.append(new_sentence)
     return new_sentences
 
 def correct_sentences(obversed_text, prompt, lmcsc_model):

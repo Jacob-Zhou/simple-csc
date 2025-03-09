@@ -186,7 +186,7 @@ curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/js
 ```
 
 ### 演示应用
-我们为我们的方法提供了一个演示应用。要运行演示：
+我们为我们的方法提供了一个演示应用 (Demo)。要运行该 Demo，您需要：
 
 1. 确保您已安装 `streamlit` 包。
 2. 运行以下命令：
@@ -195,7 +195,10 @@ curl -X POST 'http://127.0.0.1:8000/correction' -H 'Content-Type: application/js
 streamlit run demo.py
 ```
 
-默认情况下，演示使用 `Qwen/Qwen2.5-0.5B`，可以在具有 32GB 内存的 V100 GPU 上运行。您可以在演示的侧边栏中或通过修改 `configs/demo_app_config.yaml` 中的 `default_model` 来更换其他模型。
+默认情况下，Demo 所使用 `Qwen/Qwen2.5-0.5B`，可以在具有 32GB 内存的 V100 GPU 上运行。您可以在演示的侧边栏中或通过修改 `configs/demo_app_config.yaml` 中的 `default_model` 来更换其他模型。
+
+Demo 的纠错配置为 `configs/demo_config.yaml`，这与 `v2.0.0` 中的 `c2ec_config.yaml` 相同。
+您还可以修改 `configs/demo_app_config.yaml` 中的 `config_path` 来使用其他配置。
 
 侧边栏还允许您调整 `n_beam`、`alpha` 和 `use_faithfulness_reward` 参数。
 
