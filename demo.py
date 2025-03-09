@@ -85,12 +85,17 @@ def split_text(text, max_length=256):
     sentences = reSPLIT.split(text)
 
     # Split sentences that still exceed max_length
-    for i in range(len(sentences)):
+    sentence_num = len(sentences)
+    new_sentences = []
+    for i in range(sentence_num):
         if len(sentences[i]) > max_length:
-            sentences[i : i + 1] = [
+            new_sentences.extend([
                 sentences[i][j : j + max_length]
                 for j in range(0, len(sentences[i]), max_length)
-            ]
+            ])
+        else:
+            new_sentences.append(sentences[i])
+    sentences = new_sentences
 
     # Merge sentences that are too short
     new_sentences = []
@@ -100,7 +105,8 @@ def split_text(text, max_length=256):
             new_sentences.append(new_sentence)
             new_sentence = ""
         new_sentence += sentence
-    new_sentences.append(new_sentence)
+    if new_sentence != "":
+        new_sentences.append(new_sentence)
     return new_sentences
 
 def correct_sentences(obversed_text, prompt, lmcsc_model):
@@ -224,7 +230,7 @@ def example_format_func(example):
         return f"Long Example ({len(example)} chars)"
 
 
-config = yaml.safe_load(open("configs/demo_app_config.yaml", "r"))
+config = yaml.safe_load(open("configs/demo_app_config.yaml", "r", encoding="utf-8"))
 
 if "config" not in st.session_state:
     st.session_state.config = config

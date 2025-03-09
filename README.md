@@ -53,7 +53,7 @@ __News__
 You can set up the environment by running:
 
 ```bash
-bash scripts/set_enviroment.sh
+bash scripts/set_environment.sh
 ```
 
 This will automatically create a virtual environment and install the required packages.
@@ -196,6 +196,9 @@ streamlit run demo.py
 ```
 
 By default, the demo uses `Qwen/Qwen2.5-0.5B`, which can run on a V100 GPU with 32GB memory. You can change to other models in the demo's sidebar or by modifying the `default_model` in `configs/demo_app_config.yaml`.
+
+The corrector config of the demo is `configs/demo_config.yaml`, which is the same as the `c2ec_config.yaml` in `v2.0.0`.
+You can also modify `config_path` in `configs/demo_app_config.yaml` to use other configs.
 
 The sidebar also allows you to adjust `n_beam`, `alpha`, and `use_faithfulness_reward` parameters.
 

@@ -6,23 +6,28 @@ transformation_type_paths:
   similar_vowel_dict: "data/similar_vowel_dict.json"
   pinyin_distance_matrix: "data/pinyin_distance_matrix.pkl"
   prone_to_confusion_dict: "data/prone_to_confusion_dict.json"
+  length_immutable_chars: "data/length_immutable_chars.json"
 
 n_beam: 8
 n_beam_hyps_to_keep: 1
 n_observed_chars: 8
 alpha: 2.5
+temperature: 1.5
 distortion_model_smoothing: -15.0
 use_faithfulness_reward: true
 max_length: 128
 
 distortion_probs:
   IDT: -0.04
-  PTC: -2.50
+  PTC: -0.04
   SAP: -3.75
   SIP: -4.85
   SIS: -5.40
+  ROR: -5.50
+  MIS: -8.50
   OTP: -8.91
   OTS: -8.91
+  RED: -9.00
   UNR: -14.99
 
 distortion_type_prior_priority:
@@ -32,6 +37,9 @@ distortion_type_prior_priority:
   - SIP
   - SIS
   - OTP
+  - ROR
+  - MIS
+  - RED
   - OTS
   - UNR
 
@@ -41,4 +49,7 @@ distortion_type_prior_priority_order:
   - SIP
   - SIS
   - OTP
+  - ROR
+  - MIS
+  - RED
   - OTS
