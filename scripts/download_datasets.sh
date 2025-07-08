@@ -18,6 +18,8 @@ clean() {
 all_md5=(
     "0b997ce24bef2264588ebc4b23a51e9c  datasets/aishell1/test.txt"
     "39e417823e541940367ba6cc81194e59  datasets/aishell1/test_with_contents.txt"
+    "33e87ce2699fe26c94321c3ab9890efb  datasets/cscd_ime/train.txt"
+    "9b04fcfce7ba5e5573e1908e24279c12  datasets/cscd_ime/dev.txt"
     "cfc5ab4ca6221c2c0dfd2e008db9e5fa  datasets/cscd_ime/test.txt"
     "8ee33a3dda1d6dcd01194648ac64046c  datasets/ecspell/law_500.txt"
     "001247a587a537eae782c35ede44211e  datasets/ecspell/med_500.txt"
@@ -48,6 +50,7 @@ for md5 in "${all_md5[@]}"; do
         fi
         if [ "$md5sum" != "$current_md5" ]; then
             echo "File $file is corrupted. MD5 checksum does not match."
+            any_corrupted=true
         fi
     else
         echo "File $file is missing."
@@ -143,8 +146,12 @@ clean datasets/lemon_v2 nov.txt "s/ //g"
 #    <n_error>\t<source>\t<target>\n
 ## download from drive google
 mkdir -p datasets/cscd_ime
+curl -L -o datasets/cscd_ime/train.txt 'https://docs.google.com/uc?export=download&id=1Fm0at3KLNjMFnrB3PO8K0OzxfK4uAj-T'
+curl -L -o datasets/cscd_ime/dev.txt 'https://docs.google.com/uc?export=download&id=1HFCgGQcrvitTOo6D5RQHSXCDYs9mAX0X'
 curl -L -o datasets/cscd_ime/test.txt 'https://docs.google.com/uc?export=download&id=1oDf1iZBod9rvk7T3MNU-ILqTE9X5UhGb'
 ## clean: remove the first column
+clean datasets/cscd_ime train.txt "s/^[^$(echo -e '\t')]*$(echo -e '\t')//g"
+clean datasets/cscd_ime dev.txt "s/^[^$(echo -e '\t')]*$(echo -e '\t')//g"
 clean datasets/cscd_ime test.txt "s/^[^$(echo -e '\t')]*$(echo -e '\t')//g"
 
 ## mcsc datasets
