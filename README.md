@@ -13,6 +13,7 @@ __News__
 - 2025/02/21: New version (v2.0.0) released.
   - Now we support insert and delete character operations.
   - Add prompted model, which can be used to improve the performance of the corrector.
+  - The paper of v2.0.0 is accepted by **ACL 2025 main** conference.
 - 2024/12/09: We **won 1st place** in the [Kingsoft Office 2024 Algorithm Challenge: Chinese Text Correction Competition (金山办公2024算法挑战赛-中文文本智能校对大赛)](https://datastudio.wps.cn/matchcenter/competition/1/introduction), with this codebase serving as a key module of our solution. Notably, our solution achieved an $F_{0.5}$ score that was **2.02** points higher than the second-place team.
 - 2024/09/20: Our paper is accepted by **EMNLP 2024 main** conference.
 
@@ -33,7 +34,7 @@ __News__
 
 ## Requirements
 - torch>=2.0.1
-- transformers>=4.27.0
+- transformers>=4.27.0,<=4.43.2
 - xformers==0.0.21
 - accelerate
 - bitsandbytes
@@ -55,6 +56,16 @@ You can set up the environment by running:
 ```bash
 bash scripts/set_environment.sh
 ```
+
+For Qwen3, you can set up the environment by running:
+
+```bash
+bash scripts/set_environment_qwen3.sh
+```
+
+> [!NOTE]
+> **Remember** to change the `. scripts/set_environment.sh` to `. scripts/set_environment_qwen3.sh` in the [`run.sh`](run.sh#L8) file.
+
 
 This will automatically create a virtual environment and install the required packages.
 

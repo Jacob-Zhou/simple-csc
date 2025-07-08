@@ -15,6 +15,7 @@ __新闻__
 - 2025/02/21: 新版本 (v2.0.0) 发布。
   - 现在我们支持字符的插入和删除操作。
   - 添加了 Prompt-based 模型概率，提高纠错的性能。
+  - v2.0.0 论文被 **ACL 2025 主会** 接收。
 - 2024/12/09: 我们荣获[金山办公2024算法挑战赛-中文文本智能校对大赛](https://datastudio.wps.cn/matchcenter/competition/1/introduction)冠军。在比赛中，我们以本代码库作为核心模块，取得了 $F_{0.5}$ 分数比第二名高 **2.02** 分的成绩。
 - 2024/09/20: 我们的论文被 **EMNLP 2024 主会** 接收。
 
@@ -59,6 +60,15 @@ bash scripts/set_environment.sh
 ```
 
 这将自动创建虚拟环境并安装所需的包。
+
+对于 Qwen3，您可以通过运行以下命令来配置环境：
+
+```bash
+bash scripts/set_environment_qwen3.sh
+```
+
+> [!NOTE]
+> **请注意** 将 [`run.sh`](run.sh#L8) 中的 `. scripts/set_environment.sh` 改为 `. scripts/set_environment_qwen3.sh`。
 
 为获得更好的性能，您可以安装 flash-attn：
 
