@@ -32,8 +32,8 @@ setup(
     install_requires=[
         'pypinyin',
         'pypinyin-dict',
-        'torch>=2.0.1',
-        'transformers>=4.27.0',
+        'torch==2.0.1',
+        'transformers==4.43.2',
         'sentencepiece',
         'numpy==1.24.4',
         'accelerate',
