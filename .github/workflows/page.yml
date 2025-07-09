@@ -41,7 +41,8 @@ jobs:
       run: |
         pip install -U pip setuptools
         pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
-        python setup.py install
+        # python setup.py install
+        pip install .
         pip install -U -r docs/requirements.txt
         cd docs
         sphinx-build -T -E -b html -d build/doctrees source build/html
