@@ -473,12 +473,13 @@ class TransformationType:
         Handles redundant characters before punctuation or space.
         """
         if i >= 1 and char in PUNCT:
-            removed_char = observed_sequence[:i]
-            for l in range(1, len(observed_sequence) - i):
+            removed_chars = observed_sequence[:i]
+            for l in range(1, len(observed_sequence) - i + 1):
                 key = observed_sequence[i:i+l]
                 for idx in self.identical_token_index.get(key, []):
-                    token_transformation[idx] = {k: "RED" for k in range(len(removed_char))}
-                    original_token_length[idx] = len(key.encode("utf-8")) if self.is_bytes_level else len(key)
+                    token_transformation[idx] = {k: "RED" for k in range(len(removed_chars))}
+                    replaced_chars = removed_chars + key
+                    original_token_length[idx] = len(replaced_chars.encode("utf-8")) if self.is_bytes_level else len(replaced_chars)
 
     def handle_same_pinyin(self, i, token_pinyins, token_transformation):
         r"""
@@ -605,8 +606,8 @@ class TransformationType:
         # The original code is too strict
         if not isinstance(observed_sequence, str):
             return
-        for i in range(1, 5):
-            for j in range(1, len(observed_sequence) - i):
+        for i in range(1, min(5, len(observed_sequence))):
+            for j in range(1, len(observed_sequence) - i + 1):
                 key = observed_sequence[i:i+j]
                 if len(key) == 0:
                     continue
@@ -615,7 +616,12 @@ class TransformationType:
                     # do not remove number and english letters
                     continue
                 for idx in self.identical_token_index.get(key, []):
-                    if idx not in token_transformation:
+                    existing_transformation = token_transformation.get(idx)
+                    if (
+                            existing_transformation is None
+                            or len(existing_transformation) < self.token_length[idx]
+                            or not set(existing_transformation.values()).issubset({"IDT", })
+                    ):
                         token_transformation[idx] = {k: "RED" for k in range(len(removed_chars))}
                         replaced_chars = removed_chars + key
                         original_token_length[idx] = len(replaced_chars.encode("utf-8")) if self.is_bytes_level else len(replaced_chars)
